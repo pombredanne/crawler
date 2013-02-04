@@ -28,15 +28,14 @@ public class SiteCrawlerActivitiesImpl implements SiteCrawlerActivities {
     private void storeArticles(List<Article> articles) throws IOException {
         AWSHelper awsHelper = new AWSHelper();
         AmazonS3 s3 = awsHelper.createS3Client();
-        if (!s3.doesBucketExist(awsHelper.getS3bucket()))
-            s3.createBucket(awsHelper.getS3bucket());
+        if (!s3.doesBucketExist(awsHelper.getS3ArticleBucket()))
+            s3.createBucket(awsHelper.getS3ArticleBucket());
         for (Article article : articles) {
-            //TODO MINOR TEST encoded url saving
-            String key = article.getSiteId() + AWSHelper.S3_NAME_DELIMETER + HttpHelper.encode(article.getUrl()) + AWSHelper.S3_NAME_SUFFIX;
+            String key = Article.generateId(article.getSiteId(), article.getUrl());
             if (awsHelper.isS3RewriteAllowed()) {
                 storeArticle(key, article);
             } else {
-                if (s3.getObject(awsHelper.getS3bucket(), key) == null) {
+                if (s3.getObject(awsHelper.getS3ArticleBucket(), key) == null) {
                     //TODO MINOR AWS check to overwrite only empty fields
                     storeArticle(key, article);
                 } else {
@@ -53,7 +52,7 @@ public class SiteCrawlerActivitiesImpl implements SiteCrawlerActivities {
         ObjectMetadata metadata = new ObjectMetadata();
         //TODO MEDIUM AWS think on separation of metadata and content
         //metadata.setUserMetadata();
-        s3.putObject(awsHelper.getS3bucket(), key, stringToInputStream(JsonHelper.parseObject(article)), metadata);
+        s3.putObject(awsHelper.getS3ArticleBucket(), key, stringToInputStream(JsonHelper.parseObject(article)), metadata);
     }
 
     public long storeArchivedArticlesList(Site site) throws Exception {

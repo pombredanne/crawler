@@ -4,6 +4,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 /**
@@ -15,8 +16,7 @@ import java.net.URL;
 public class JsonHelper {
 
     private static ObjectMapper getMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper;
+        return new ObjectMapper();
     }
 
     public static <T> T parseJson(String json, Class<T> clazz) throws IOException {
@@ -29,6 +29,10 @@ public class JsonHelper {
 
     public static <T> T parseJson(File jsonFile, Class<T> clazz) throws IOException{
         return getMapper().readValue(jsonFile, clazz);
+    }
+
+    public static <T> T parseJson(InputStream inStream, Class<T> clazz) throws IOException{
+        return getMapper().readValue(inStream, clazz);
     }
 
     public static String parseObject(Object object) throws IOException {

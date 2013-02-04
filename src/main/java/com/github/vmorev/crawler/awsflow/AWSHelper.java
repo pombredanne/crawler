@@ -18,6 +18,7 @@ import java.util.Map;
 public class AWSHelper {
     public static final String S3_NAME_DELIMETER = "-";
     public static final String S3_NAME_SUFFIX = ".json";
+    public static final String S3_METADATA_FLOWID = "flow-id";
 
     private static final String CONFIG_FILE = "aws.json";
     private static final String ACCESS_KEY = "accessKey";
@@ -25,7 +26,8 @@ public class AWSHelper {
     private static final String SWF_URL = "swfUrl";
     private static final String SWF_DOMAIN = "swfDomain";
     private static final String SWF_TASKLIST = "swfTaskList";
-    private static final String S3_BUCKET = "s3bucket";
+    private static final String S3_ARTICLE_BUCKET = "s3ArticleBucket";
+    private static final String S3_SITE_BUCKET = "s3SiteBucket";
     private static final String S3_REWRITE = "s3rewrite";
 
     private Map<String, String> config;
@@ -56,8 +58,12 @@ public class AWSHelper {
         return config.get(SWF_TASKLIST);
     }
 
-    public String getS3bucket() {
-        return config.get(S3_BUCKET);
+    public String getS3ArticleBucket() {
+        return config.get(S3_ARTICLE_BUCKET);
+    }
+
+    public String getS3SiteBucket() {
+        return config.get(S3_SITE_BUCKET);
     }
 
     public boolean isS3RewriteAllowed() {

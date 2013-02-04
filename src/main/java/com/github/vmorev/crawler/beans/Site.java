@@ -1,5 +1,8 @@
 package com.github.vmorev.crawler.beans;
 
+import com.github.vmorev.crawler.awsflow.AWSHelper;
+import com.github.vmorev.crawler.utils.HttpHelper;
+
 /**
  * User: Valentin_Morev
  * Date: 10.01.13
@@ -12,6 +15,10 @@ public class Site {
     private String oldArticlesCrawler;
     private long lcDate;
     private boolean isArchiveStored;
+
+    public static String generateId(String url) {
+        return HttpHelper.encode(url) + AWSHelper.S3_NAME_SUFFIX;
+    }
 
     public String getUrl() {
         return url;

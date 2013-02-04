@@ -1,5 +1,8 @@
 package com.github.vmorev.crawler.sitecrawler.diffbot;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.S3Object;
 import com.github.vmorev.crawler.awsflow.AWSHelper;
 import com.github.vmorev.crawler.beans.Article;
 import com.github.vmorev.crawler.beans.Site;
@@ -40,8 +43,9 @@ public class DiffbotSiteCrawler implements SiteCrawler {
             site.setExternalId(response.substring(response.indexOf("id=\"") + 4, response.indexOf("\">")));
 
             AWSHelper awsHelper = new AWSHelper();
-            //awsHelper.createS3Client().getObject(site.getUrl());
-            //TODO MAJOR update site with diffbotID
+            AmazonS3 s3 = awsHelper.createS3Client();
+            ObjectMetadata objectMetadata = s3.getObjectMetadata(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()));
+            s3.putObject(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()), HttpHelper.stringToInputStream(JsonHelper.parseObject(site)), objectMetadata);
         }
 
         String apiUrl = "http://www.diffbot.com/api/dfs/dml/archive?output=json&token=" + token + "&id=" + site.getExternalId();

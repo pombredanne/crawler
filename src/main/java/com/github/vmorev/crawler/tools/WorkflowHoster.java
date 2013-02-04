@@ -9,14 +9,15 @@ import java.util.concurrent.TimeUnit;
 public class WorkflowHoster {
 
     public static void main(String[] args) throws Exception {
-        if (!(args.length > 0 && args[0] != null && args[0].length() > 0)) {
-            System.out.println("Full workflow class name should be provided as an argument");
+        if (!(args.length > 1 && args[0] != null && args[0].length() > 0 && args[1] != null && args[1].length() > 0)) {
+            System.out.println("Two parameters required: Full workflow class name and # of workers to start");
             System.exit(1);
         }
+        long workers = Long.parseLong(args[1]);
+        for (long i = 0; i < workers; i++)
+            hostWorkflow(Class.forName(args[0]));
 
-        hostWorkflow(Class.forName(args[0]));
-
-        System.out.println(WorkflowHoster.class.getSimpleName() + " Service Started...");
+        System.out.println(Class.forName(args[0]) + " started " + workers + " times");
         System.out.println("Please press any key to terminate service.");
         try {
             //noinspection ResultOfMethodCallIgnored
@@ -27,7 +28,7 @@ public class WorkflowHoster {
         System.exit(0);
     }
 
-    public static WorkflowWorker hostWorkflow(Class clazz) throws IOException, IllegalAccessException, InstantiationException {
+    public static WorkflowWorker hostWorkflow(final Class clazz) throws IOException, IllegalAccessException, InstantiationException {
         AWSHelper awsHelper = new AWSHelper();
         final WorkflowWorker worker =
                 new WorkflowWorker(awsHelper.createSWFClient(), awsHelper.getSWFDomain(), awsHelper.getSwfTasklist());
@@ -38,7 +39,7 @@ public class WorkflowHoster {
             public void run() {
                 try {
                     worker.shutdownAndAwaitTermination(1, TimeUnit.MINUTES);
-                    System.out.println(WorkflowHoster.class.getSimpleName() + " Service Terminated...");
+                    System.out.println(clazz.getName() + " was terminated...");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
