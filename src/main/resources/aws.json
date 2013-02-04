@@ -1,0 +1,12 @@
+{
+    "username" : "",
+    "accessKey" : "",
+    "secretKey" : "",
+
+    "swfUrl" : "http://swf.us-east-1.amazonaws.com",
+    "swfDomain" : "crawler",
+    "swfTaskList" : "crawler",
+
+    "s3bucket" : "crawler",
+    "s3rewrite" : "true"
+}
