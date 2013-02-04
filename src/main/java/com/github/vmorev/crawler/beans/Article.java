@@ -21,7 +21,6 @@ public class Article {
     //private String numPages;
 
     public static String generateId(String siteId, String url) {
-        //TODO MINOR TEST encoded url saving
         return siteId + AWSHelper.S3_NAME_DELIMETER + HttpHelper.encode(url) + AWSHelper.S3_NAME_SUFFIX;
     }
 

@@ -3,12 +3,14 @@ package com.github.vmorev.crawler.tools;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.amazonaws.services.simpleworkflow.model.*;
 import com.github.vmorev.crawler.awsflow.AWSHelper;
 import com.github.vmorev.crawler.awsflow.workflow.*;
 import com.github.vmorev.crawler.beans.Article;
 import com.github.vmorev.crawler.beans.Site;
+import com.github.vmorev.crawler.utils.HttpHelper;
 import com.github.vmorev.crawler.utils.JsonHelper;
 
 import java.io.File;
@@ -59,7 +61,7 @@ public class WorkflowExecutionStarter {
         System.exit(0);
     }
 
-    private static List<Site> getSitesWithoutFlow() throws IOException {
+    public static List<Site> getSitesWithoutFlow() throws IOException {
         List<Site> sites = new ArrayList<>();
         AWSHelper awsHelper = new AWSHelper();
         AmazonS3 s3 = awsHelper.createS3Client();
@@ -69,11 +71,17 @@ public class WorkflowExecutionStarter {
                 ObjectMetadata objectMetadata = s3.getObjectMetadata(awsHelper.getS3SiteBucket(), objectSummary.getKey());
                 String flowId = objectMetadata.getUserMetadata().get(AWSHelper.S3_METADATA_FLOWID);
 
-                CountOpenWorkflowExecutionsRequest request = new CountOpenWorkflowExecutionsRequest();
-                WorkflowExecutionFilter filter = new WorkflowExecutionFilter();
-                filter.setWorkflowId(flowId);
-                request.setExecutionFilter(filter);
-                if (awsHelper.createSWFClient().countOpenWorkflowExecutions(request).getCount() < 1)
+                boolean isFlowExist = flowId != null && flowId.length() > 0;
+                if (isFlowExist) {
+                    CountOpenWorkflowExecutionsRequest request = new CountOpenWorkflowExecutionsRequest();
+                    request.setDomain(awsHelper.getSWFDomain());
+                    WorkflowExecutionFilter filter = new WorkflowExecutionFilter();
+                    filter.setWorkflowId(flowId);
+                    request.setExecutionFilter(filter);
+                    if (awsHelper.createSWFClient().countOpenWorkflowExecutions(request).getCount() < 1)
+                        isFlowExist = false;
+                }
+                if (!isFlowExist)
                     sites.add(JsonHelper.parseJson(s3.getObject(awsHelper.getS3SiteBucket(), objectSummary.getKey()).getObjectContent(), Site.class));
             }
             objectListing.setMarker(objectListing.getNextMarker());
@@ -88,9 +96,9 @@ public class WorkflowExecutionStarter {
         SiteCrawlerWorkflowClientExternal workflow = clientFactory.getClient();
         workflow.startSiteTracking(site);
         AmazonS3 s3 = awsHelper.createS3Client();
-        //TODO MAJOR TEST unique workflow id for diff sites
-        ObjectMetadata siteMetadata = s3.getObjectMetadata(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()));
-        siteMetadata.getUserMetadata().put(AWSHelper.S3_METADATA_FLOWID, workflow.getWorkflowExecution().getWorkflowId());
+        ObjectMetadata objectMetadata = s3.getObjectMetadata(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()));
+        objectMetadata.getUserMetadata().put(AWSHelper.S3_METADATA_FLOWID, workflow.getWorkflowExecution().getWorkflowId());
+        s3.putObject(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()), HttpHelper.stringToInputStream(JsonHelper.parseObject(site)), objectMetadata);
         return workflow.getWorkflowExecution();
     }
 

@@ -36,7 +36,7 @@ public class AWSHelper {
         config = ConfigStorage.getInstance(CONFIG_FILE, Map.class, false);
     }
 
-    private AWSCredentials getCredentials() {
+    public AWSCredentials getCredentials() {
         return new BasicAWSCredentials(config.get(ACCESS_KEY), config.get(SECRET_KEY));
     }
 
