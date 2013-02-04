@@ -1,5 +1,8 @@
 package com.github.vmorev.crawler.beans;
 
+import com.github.vmorev.crawler.awsflow.AWSHelper;
+import com.github.vmorev.crawler.utils.HttpHelper;
+
 /**
  * User: Valentin_Morev
  * Date: 10.01.13
@@ -16,6 +19,10 @@ public class Article {
     //TODO MINOR DIFFBOT check if next page param is required
     //private String nextPage;
     //private String numPages;
+
+    public static String generateId(String siteId, String url) {
+        return siteId + AWSHelper.S3_NAME_DELIMETER + HttpHelper.encode(url) + AWSHelper.S3_NAME_SUFFIX;
+    }
 
     public String getText() {
         return text;

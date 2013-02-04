@@ -51,6 +51,16 @@ public class HttpHelper {
     }
 
     //TODO MINOR LIBRARY this and all private methods to external library
+
+    public static InputStream stringToInputStream(String str) throws UnsupportedEncodingException {
+        return stringToInputStream(str, "UTF8");
+    }
+
+    public static InputStream stringToInputStream(String str, String encoding)
+            throws UnsupportedEncodingException {
+        return new ByteArrayInputStream(str.getBytes(encoding));
+    }
+
     public static String inputStreamToString(InputStream inStream, String encoding)
             throws IOException {
         byte[] buffer = new byte[BUFFER_SIZE];

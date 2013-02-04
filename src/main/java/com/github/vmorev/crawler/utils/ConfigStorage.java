@@ -26,7 +26,7 @@ public class ConfigStorage {
             synchronized (ConfigStorage.class) {
                 tmpInstance = (T) instances.get(configName);
                 if (tmpInstance == null || reload) {
-                    if (clazz.isInstance(Map.class))
+                    if (clazz.getName().equals(Map.class.getName()))
                         tmpInstance = loadMap(configName, clazz);
                     else
                         tmpInstance = load(configName, clazz);
@@ -47,7 +47,13 @@ public class ConfigStorage {
         try {
             T localConfig = JsonHelper.parseJson(ClassLoader.getSystemResource(configName.replace(".json", ".local.json")), clazz);
             ((Map) config).putAll((Map) localConfig);
-        } catch (IOException e) {
+        } catch (Throwable e) {
+            //just ignore
+        }
+        try {
+            T localConfig = JsonHelper.parseJson(ClassLoader.getSystemResource(configName.replace(".json", ".test.json")), clazz);
+            ((Map) config).putAll((Map) localConfig);
+        } catch (Throwable e) {
             //just ignore
         }
         return config;

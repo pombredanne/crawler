@@ -22,7 +22,7 @@ public class SiteCrawlerWorkflowImpl implements SiteCrawlerWorkflow {
         if (articlesStored.get() == 0) {
             //TODO MAJOR AWS notify of archive storing failure
         } else {
-            //TODO MAJOR AWS restart job in an hour
+            //TODO MAJOR AWS restart job in an hour and update flowid in site
         }
     }
 
