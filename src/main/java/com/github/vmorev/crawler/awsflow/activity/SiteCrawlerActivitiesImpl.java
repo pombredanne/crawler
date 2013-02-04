@@ -1,18 +1,12 @@
 package com.github.vmorev.crawler.awsflow.activity;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.github.vmorev.crawler.sitecrawler.SiteCrawler;
 import com.github.vmorev.crawler.awsflow.AWSHelper;
 import com.github.vmorev.crawler.beans.Article;
 import com.github.vmorev.crawler.beans.Site;
-import com.github.vmorev.crawler.utils.HttpHelper;
-import com.github.vmorev.crawler.utils.JsonHelper;
+import com.github.vmorev.crawler.sitecrawler.SiteCrawler;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 public class SiteCrawlerActivitiesImpl implements SiteCrawlerActivities {
@@ -47,12 +41,7 @@ public class SiteCrawlerActivitiesImpl implements SiteCrawlerActivities {
 
     private void storeArticle(String key, Article article) throws IOException {
         AWSHelper awsHelper = new AWSHelper();
-        AmazonS3 s3 = awsHelper.createS3Client();
-
-        ObjectMetadata metadata = new ObjectMetadata();
-        //TODO MEDIUM AWS think on separation of metadata and content
-        //metadata.setUserMetadata();
-        s3.putObject(awsHelper.getS3ArticleBucket(), key, stringToInputStream(JsonHelper.parseObject(article)), metadata);
+        awsHelper.saveS3Object(awsHelper.getS3ArticleBucket(), key, article);
     }
 
     public long storeArchivedArticlesList(Site site) throws Exception {
@@ -60,16 +49,6 @@ public class SiteCrawlerActivitiesImpl implements SiteCrawlerActivities {
         List<Article> articles = crawler.getArchivedArticles(site);
         storeArticles(articles);
         return articles.size();
-    }
-
-    //TODO MINOR LIBRARY move to library
-    private InputStream stringToInputStream(String str) throws UnsupportedEncodingException {
-        return stringToInputStream(str, "UTF8");
-    }
-
-    private InputStream stringToInputStream(String str, String encoding)
-            throws UnsupportedEncodingException {
-        return new ByteArrayInputStream(str.getBytes(encoding));
     }
 
 }

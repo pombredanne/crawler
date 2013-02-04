@@ -66,11 +66,11 @@ public class WorkflowExecutionStarterTest {
     public void testGetSitesWithoutFlow() throws Exception {
         String fileName = "testSitesFlowCreation1.json";
         Site site = JsonHelper.parseJson(ClassLoader.getSystemResource(fileName), Site.class);
-        s3.putObject(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()), HttpHelper.stringToInputStream(JsonHelper.parseObject(site)), null);
+        awsHelper.saveS3Object(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()), site);
 
         fileName = "testSitesFlowCreation2.json";
         Site site2 = JsonHelper.parseJson(ClassLoader.getSystemResource(fileName), Site.class);
-        s3.putObject(awsHelper.getS3SiteBucket(), Site.generateId(site2.getUrl()), HttpHelper.stringToInputStream(JsonHelper.parseObject(site2)), null);
+        awsHelper.saveS3Object(awsHelper.getS3SiteBucket(), Site.generateId(site2.getUrl()), site2);
 
         List<Site> sites = WorkflowExecutionStarter.getSitesWithoutFlow();
         assertNotNull(sites);
@@ -83,11 +83,11 @@ public class WorkflowExecutionStarterTest {
     public void testStartSiteFlow() throws Exception {
         String fileName = "testSitesFlowCreation1.json";
         Site site = JsonHelper.parseJson(ClassLoader.getSystemResource(fileName), Site.class);
-        s3.putObject(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()), HttpHelper.stringToInputStream(JsonHelper.parseObject(site)), null);
+        awsHelper.saveS3Object(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()), site);
 
         fileName = "testSitesFlowCreation2.json";
         Site site2 = JsonHelper.parseJson(ClassLoader.getSystemResource(fileName), Site.class);
-        s3.putObject(awsHelper.getS3SiteBucket(), Site.generateId(site2.getUrl()), HttpHelper.stringToInputStream(JsonHelper.parseObject(site2)), null);
+        awsHelper.saveS3Object(awsHelper.getS3SiteBucket(), Site.generateId(site2.getUrl()), site2);
 
         executions.add(WorkflowExecutionStarter.startSiteFlow(site));
         executions.add(WorkflowExecutionStarter.startSiteFlow(site2));

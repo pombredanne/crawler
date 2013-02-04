@@ -2,7 +2,6 @@ package com.github.vmorev.crawler.sitecrawler.diffbot;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.S3Object;
 import com.github.vmorev.crawler.awsflow.AWSHelper;
 import com.github.vmorev.crawler.beans.Article;
 import com.github.vmorev.crawler.beans.Site;
@@ -36,7 +35,7 @@ public class DiffbotSiteCrawler implements SiteCrawler {
     public List<Article> getNewArticles(Site site) throws IOException {
         String token = diffbotHelper.getToken();
 
-        if (site.getExternalId() == null) {
+        if (site.getExternalId() == null || site.getExternalId().length() <= 0) {
             String apiUrl = "http://www.diffbot.com/api/add";
             String params = "output=rss&token=" + token + "&url=" + HttpHelper.encode(site.getUrl());
             String response = HttpHelper.postResponse(apiUrl, params);
@@ -45,7 +44,7 @@ public class DiffbotSiteCrawler implements SiteCrawler {
             AWSHelper awsHelper = new AWSHelper();
             AmazonS3 s3 = awsHelper.createS3Client();
             ObjectMetadata objectMetadata = s3.getObjectMetadata(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()));
-            s3.putObject(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()), HttpHelper.stringToInputStream(JsonHelper.parseObject(site)), objectMetadata);
+            awsHelper.saveS3Object(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()), site, objectMetadata);
         }
 
         String apiUrl = "http://www.diffbot.com/api/dfs/dml/archive?output=json&token=" + token + "&id=" + site.getExternalId();

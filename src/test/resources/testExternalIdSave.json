@@ -1,0 +1,8 @@
+{
+    "url" : "http://www.cnn.com",
+    "externalId" : "",
+    "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
+    "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
+    "lcDate" : "",
+    "isArchiveStored" : ""
+}

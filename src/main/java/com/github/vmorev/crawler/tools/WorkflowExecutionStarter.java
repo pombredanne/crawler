@@ -3,7 +3,6 @@ package com.github.vmorev.crawler.tools;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.amazonaws.services.simpleworkflow.model.*;
 import com.github.vmorev.crawler.awsflow.AWSHelper;
@@ -15,6 +14,7 @@ import com.github.vmorev.crawler.utils.JsonHelper;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +32,11 @@ public class WorkflowExecutionStarter {
         WorkflowExecution workflowExecution;
         if ("article".equals(flowName)) {
             Article article = JsonHelper.parseJson(new File(paramName), Article.class);
+
+            //Saving article on S3
+            AWSHelper awsHelper = new AWSHelper();
+            awsHelper.saveS3Object(awsHelper.getS3ArticleBucket(), Article.generateId(awsHelper.getS3ArticleBucket(), article.getUrl()), article);
+
             workflowExecution = startArticleFlow(article);
             System.out.println("Started article workflow with workflowId=\"" + workflowExecution.getWorkflowId()
                     + "\" and runId=\"" + workflowExecution.getRunId() + "\" for " + paramName);
@@ -45,6 +50,11 @@ public class WorkflowExecutionStarter {
                 }
             } else {
                 Site site = JsonHelper.parseJson(new File(paramName), Site.class);
+
+                //Saving site on S3
+                AWSHelper awsHelper = new AWSHelper();
+                awsHelper.saveS3Object(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()), site);
+
                 workflowExecution = startSiteFlow(site);
                 System.out.println("Started site workflow with workflowId=\"" + workflowExecution.getWorkflowId()
                         + "\" and runId=\"" + workflowExecution.getRunId() + "\" for " + paramName);
@@ -98,7 +108,7 @@ public class WorkflowExecutionStarter {
         AmazonS3 s3 = awsHelper.createS3Client();
         ObjectMetadata objectMetadata = s3.getObjectMetadata(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()));
         objectMetadata.getUserMetadata().put(AWSHelper.S3_METADATA_FLOWID, workflow.getWorkflowExecution().getWorkflowId());
-        s3.putObject(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()), HttpHelper.stringToInputStream(JsonHelper.parseObject(site)), objectMetadata);
+        awsHelper.saveS3Object(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()), site, objectMetadata);
         return workflow.getWorkflowExecution();
     }
 

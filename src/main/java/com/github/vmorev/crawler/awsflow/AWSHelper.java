@@ -4,11 +4,15 @@ import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.simpleworkflow.AmazonSimpleWorkflow;
 import com.amazonaws.services.simpleworkflow.AmazonSimpleWorkflowClient;
 import com.github.vmorev.crawler.utils.ConfigStorage;
+import com.github.vmorev.crawler.utils.HttpHelper;
+import com.github.vmorev.crawler.utils.JsonHelper;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 /**
@@ -48,6 +52,16 @@ public class AWSHelper {
 
     public AmazonS3 createS3Client() throws IOException {
         return new AmazonS3Client(getCredentials());
+    }
+
+    public <T> void saveS3Object(String bucket, String key, T obj) throws IOException {
+        saveS3Object(bucket, key, obj, new ObjectMetadata());
+    }
+
+    public <T> void saveS3Object(String bucket, String key, T obj, ObjectMetadata metadata) throws IOException {
+        InputStream inStream = HttpHelper.stringToInputStream(JsonHelper.parseObject(obj));
+        metadata.setContentLength(inStream.available());
+        createS3Client().putObject(bucket, key, inStream, metadata);
     }
 
     public String getSWFDomain() {
