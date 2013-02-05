@@ -2,7 +2,6 @@ package com.github.vmorev.crawler.awsflow.workflow;
 
 import com.amazonaws.services.simpleworkflow.flow.ActivityWorker;
 import com.amazonaws.services.simpleworkflow.flow.WorkflowWorker;
-import com.amazonaws.services.simpleworkflow.flow.junit.FlowBlockJUnit4ClassRunner;
 import com.amazonaws.services.simpleworkflow.model.History;
 import com.amazonaws.services.simpleworkflow.model.WorkflowExecution;
 import com.github.vmorev.crawler.awsflow.activity.SiteCrawlerActivities;
@@ -15,9 +14,7 @@ import com.github.vmorev.crawler.utils.JsonHelper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-@RunWith(FlowBlockJUnit4ClassRunner.class)
 public class SiteCrawlerActivitiesTest {
 
     @Before

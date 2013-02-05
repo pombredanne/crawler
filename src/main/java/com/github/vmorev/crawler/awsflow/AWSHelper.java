@@ -32,7 +32,6 @@ public class AWSHelper {
     private static final String SWF_TASKLIST = "swfTaskList";
     private static final String S3_ARTICLE_BUCKET = "s3ArticleBucket";
     private static final String S3_SITE_BUCKET = "s3SiteBucket";
-    private static final String S3_REWRITE = "s3rewrite";
 
     private Map<String, String> config;
 
@@ -78,9 +77,5 @@ public class AWSHelper {
 
     public String getS3SiteBucket() {
         return config.get(S3_SITE_BUCKET);
-    }
-
-    public boolean isS3RewriteAllowed() {
-        return Boolean.valueOf(config.get(S3_REWRITE));
     }
 }

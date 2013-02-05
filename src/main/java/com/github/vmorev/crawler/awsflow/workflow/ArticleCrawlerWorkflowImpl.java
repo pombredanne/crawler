@@ -11,19 +11,18 @@ public class ArticleCrawlerWorkflowImpl implements ArticleCrawlerWorkflow {
     ArticleCrawlerActivitiesClient client = new ArticleCrawlerActivitiesClientImpl();
 
     public void startArticleProcessing(Article article) {
-        Promise<Boolean> isContentStored = storeContent(article);
-        if (isContentStored.get()) {
-            Promise<Boolean> isMetadataStored = storeMetadata(article);
-        }
+        Promise<Void> timer = storeContent(article);
+
+        storeMetadata(article, timer);
     }
 
     @Asynchronous
-    private Promise<Boolean> storeContent(Article article) {
+    private Promise<Void> storeContent(Article article) {
         return client.storeContent(article);
     }
 
     @Asynchronous
-    private Promise<Boolean> storeMetadata(Article article) {
+    private Promise<Void> storeMetadata(Article article, Promise<?> timers) {
         return client.storeMetadata(article);
     }
 

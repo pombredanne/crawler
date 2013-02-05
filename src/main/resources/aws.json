@@ -8,6 +8,5 @@
     "swfTaskList" : "crawler",
 
     "s3ArticleBucket" : "crawler-articles",
-    "s3SiteBucket" : "crawler-sites",
-    "s3rewrite" : "true"
+    "s3SiteBucket" : "crawler-sites"
 }
