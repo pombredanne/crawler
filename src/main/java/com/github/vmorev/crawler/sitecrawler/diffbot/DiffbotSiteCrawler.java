@@ -67,7 +67,9 @@ public class DiffbotSiteCrawler implements SiteCrawler {
                         article.setcDate((String) ((List) props.get("childNodes")).get(0));
                     }
                 }
-                articles.add(article);
+                article.setSiteId(Site.generateId(site.getUrl()));
+                if(article.getUrl() != null)
+                    articles.add(article);
             }
         }
         return articles;
@@ -85,6 +87,7 @@ public class DiffbotSiteCrawler implements SiteCrawler {
      * @throws IOException in case of communication errors
      */
     public Article getArticle(Article article) throws IOException {
+        //TODO MAJOR add siteid
         String token = diffbotHelper.getToken();
         String apiUrl = "http://www.diffbot.com/api/article?token=" + token + "&tags=1&comments=1&summary=1&url=" + HttpHelper.encode(article.getUrl());
         String response = HttpHelper.getResponse(apiUrl);

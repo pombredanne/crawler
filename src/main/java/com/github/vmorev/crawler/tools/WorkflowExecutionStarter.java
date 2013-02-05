@@ -9,55 +9,72 @@ import com.github.vmorev.crawler.awsflow.AWSHelper;
 import com.github.vmorev.crawler.awsflow.workflow.*;
 import com.github.vmorev.crawler.beans.Article;
 import com.github.vmorev.crawler.beans.Site;
-import com.github.vmorev.crawler.utils.HttpHelper;
 import com.github.vmorev.crawler.utils.JsonHelper;
+import org.codehaus.jackson.type.TypeReference;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WorkflowExecutionStarter {
 
     public static void main(String[] args) throws Exception {
-        if (!(args.length > 1 && args[0] != null && args[0].length() > 0 && args[1] != null && args[1].length() > 0 && (args[0].equals("site") || args[0].equals("article")))) {
-            System.out.println("Two parameters required: flow name (site or article) and file name of json file with site or article content");
-            System.out.println("Another option is to start flows for all sites by calling \"site all\" as parameters to this tool without quotes");
+        if (!(args.length > 1 && args[0] != null && args[0].length() > 0 && args[1] != null && args[1].length() > 0
+                && (args[0].equals("site") || args[0].equals("article") || args[0].equals("sites")))) {
+            System.out.println("Two parameters required: flow name (site, sites or article) and file name of json file with site or article content");
+            System.out.println("Another option is to start flows for all sites by calling \"sites all\" as parameters to this tool without quotes");
             System.exit(1);
         }
         String flowName = args[0];
         String paramName = args[1];
 
         WorkflowExecution workflowExecution;
+        AWSHelper awsHelper = new AWSHelper();
         if ("article".equals(flowName)) {
+            AmazonS3 s3 = awsHelper.createS3Client();
+            if (!s3.doesBucketExist(awsHelper.getS3ArticleBucket()))
+                s3.createBucket(awsHelper.getS3ArticleBucket());
+
             Article article = JsonHelper.parseJson(new File(paramName), Article.class);
 
             //Saving article on S3
-            AWSHelper awsHelper = new AWSHelper();
             awsHelper.saveS3Object(awsHelper.getS3ArticleBucket(), Article.generateId(awsHelper.getS3ArticleBucket(), article.getUrl()), article);
 
             workflowExecution = startArticleFlow(article);
             System.out.println("Started article workflow with workflowId=\"" + workflowExecution.getWorkflowId()
                     + "\" and runId=\"" + workflowExecution.getRunId() + "\" for " + paramName);
         } else {
-            if ("all".equalsIgnoreCase(paramName)) {
+            AmazonS3 s3 = awsHelper.createS3Client();
+            if (!s3.doesBucketExist(awsHelper.getS3SiteBucket()))
+                s3.createBucket(awsHelper.getS3SiteBucket());
+
+            if ("sites".equalsIgnoreCase(flowName) && "all".equalsIgnoreCase(paramName)) {
                 List<Site> sites = getSitesWithoutFlow();
                 for (Site site : sites) {
                     workflowExecution = startSiteFlow(site);
                     System.out.println("Started site workflow with workflowId=\"" + workflowExecution.getWorkflowId()
                             + "\" and runId=\"" + workflowExecution.getRunId() + "\" for " + site.getUrl());
                 }
-            } else {
+            } else if ("site".equalsIgnoreCase(flowName)) {
                 Site site = JsonHelper.parseJson(new File(paramName), Site.class);
 
                 //Saving site on S3
-                AWSHelper awsHelper = new AWSHelper();
                 awsHelper.saveS3Object(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()), site);
 
                 workflowExecution = startSiteFlow(site);
                 System.out.println("Started site workflow with workflowId=\"" + workflowExecution.getWorkflowId()
                         + "\" and runId=\"" + workflowExecution.getRunId() + "\" for " + paramName);
+            } else if ("sites".equalsIgnoreCase(flowName)) {
+                List<Site> sites = JsonHelper.parseJson(new File(paramName), new TypeReference<List<Site>>() { });
+
+                //Saving site on S3
+                for (Site site : sites) {
+                    awsHelper.saveS3Object(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()), site);
+                    workflowExecution = startSiteFlow(site);
+                    System.out.println("Started site workflow with workflowId=\"" + workflowExecution.getWorkflowId()
+                            + "\" and runId=\"" + workflowExecution.getRunId() + "\" for " + paramName);
+                }
             }
         }
 
