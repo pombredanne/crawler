@@ -21,9 +21,9 @@ import java.util.List;
 public class WorkflowExecutionStarter {
 
     public static void main(String[] args) throws Exception {
-        if (!(args.length > 1 && args[0] != null && args[0].length() > 0 && args[1] != null && args[1].length() > 0)) {
+        if (!(args.length > 1 && args[0] != null && args[0].length() > 0 && args[1] != null && args[1].length() > 0 && (args[0].equals("site") || args[0].equals("article")))) {
             System.out.println("Two parameters required: flow name (site or article) and file name of json file with site or article content");
-            System.out.println("Another option is to start flows for all sites by calling \"sites all\" as parameters to this tool without quotes");
+            System.out.println("Another option is to start flows for all sites by calling \"site all\" as parameters to this tool without quotes");
             System.exit(1);
         }
         String flowName = args[0];
@@ -61,7 +61,7 @@ public class WorkflowExecutionStarter {
             }
         }
 
-        System.out.println("Please press any key to terminate service.");
+        System.out.println("Please press ENTER key to terminate service.");
         try {
             //noinspection ResultOfMethodCallIgnored
             System.in.read();
