@@ -1,6 +1,10 @@
 package com.github.vmorev.crawler.awsflow.activity;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.simpleworkflow.flow.ActivityExecutionContext;
 import com.amazonaws.services.simpleworkflow.flow.ActivityExecutionContextProvider;
 import com.amazonaws.services.simpleworkflow.flow.ActivityExecutionContextProviderImpl;
@@ -23,7 +27,6 @@ public class SiteCrawlerActivitiesImpl implements SiteCrawlerActivities {
     }
 
     public long storeNewArticlesList(Site site) throws Exception {
-        //TODO MAJOR TEST crawler failure
         SiteCrawler crawler = (SiteCrawler) Class.forName(site.getNewArticlesCrawler()).newInstance();
         List<Article> articles = crawler.getNewArticles(site);
         storeArticles(articles);
@@ -37,7 +40,7 @@ public class SiteCrawlerActivitiesImpl implements SiteCrawlerActivities {
             s3.createBucket(awsHelper.getS3ArticleBucket());
         for (Article article : articles) {
             String key = Article.generateId(article.getSiteId(), article.getUrl());
-            if (s3.getObject(awsHelper.getS3ArticleBucket(), key) == null) {
+            if (awsHelper.getS3Object(awsHelper.getS3ArticleBucket(), key) == null) {
                 awsHelper.saveS3Object(awsHelper.getS3ArticleBucket(), key, article);
             } else {
                 //TODO MINOR overwrite only empty fields

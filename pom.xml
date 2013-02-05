@@ -9,6 +9,7 @@
     <properties>
         <java.version>1.7</java.version>
         <java.sourceEncoding>UTF-8</java.sourceEncoding>
+        <aspectj.version>1.7.1</aspectj.version>
     </properties>
     <build>
         <finalName>${project.artifactId}</finalName>
@@ -40,12 +41,12 @@
                     <dependency>
                         <groupId>org.aspectj</groupId>
                         <artifactId>aspectjrt</artifactId>
-                        <version>1.7.1</version>
+                        <version>${aspectj.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>org.aspectj</groupId>
                         <artifactId>aspectjtools</artifactId>
-                        <version>1.7.1</version>
+                        <version>${aspectj.version}</version>
                     </dependency>
                 </dependencies>
                 <executions>
@@ -142,7 +143,7 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
-            <version>1.7.1</version>
+            <version>${aspectj.version}</version>
         </dependency>
         <dependency>
             <groupId>com.amazonaws</groupId>
