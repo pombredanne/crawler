@@ -4,16 +4,14 @@
     <list default="true" id="fa2fe512-a599-4256-9578-b9290abc97b1" name="Default" comment="" />
     <ignored path="crawler.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="$PROJECT_DIR$/src/test/java/com/github/vmorev/crawler/tools/WorkflowExecutionStarterTest.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1359991077767" ignored="false" />
-    <file path="$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/tools/WorkflowExecutionStarter.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1359991077767" ignored="false" />
     <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/workflow/SiteCrawlerWorkflowClient.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360003743220" ignored="false" />
-    <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/workflow/SiteCrawlerWorkflowClientExternal.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360003743220" ignored="false" />
+    <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/workflow/SiteCrawlerWorkflowClientExternal.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360064686980" ignored="false" />
     <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/workflow/SiteCrawlerWorkflowClientFactory.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360003743220" ignored="false" />
     <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/workflow/SiteCrawlerWorkflowClientFactoryImpl.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360003743220" ignored="false" />
     <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/workflow/SiteCrawlerWorkflowClientExternalFactoryImpl.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360003743220" ignored="false" />
     <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/workflow/SiteCrawlerWorkflowClientExternalFactory.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360003743220" ignored="false" />
-    <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/activity/SiteCrawlerActivitiesClient.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360057668564" ignored="false" />
-    <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/activity/SiteCrawlerActivitiesClientImpl.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360057668564" ignored="false" />
+    <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/activity/SiteCrawlerActivitiesClient.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360061541231" ignored="false" />
+    <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/activity/SiteCrawlerActivitiesClientImpl.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360061541231" ignored="false" />
     <file path="/SiteCrawlerActivitiesImpl.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360057967939" ignored="false" />
     <file path="/SiteCrawlerWorkflowImpl.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360056693700" ignored="false" />
     <file path="/SiteCrawlerActivities.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360056295871" ignored="false" />
@@ -21,15 +19,17 @@
     <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/workflow/ArticleCrawlerWorkflowSelfClient.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360058132642" ignored="false" />
     <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/workflow/ArticleCrawlerWorkflowSelfClientImpl.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360058132642" ignored="false" />
     <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/workflow/ArticleCrawlerWorkflowClient.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360058132642" ignored="false" />
-    <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/workflow/ArticleCrawlerWorkflowClientExternal.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360058132642" ignored="false" />
+    <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/workflow/ArticleCrawlerWorkflowClientExternal.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360064686980" ignored="false" />
     <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/workflow/ArticleCrawlerWorkflowClientExternalFactory.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360058132642" ignored="false" />
     <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/workflow/ArticleCrawlerWorkflowClientExternalFactoryImpl.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360058132642" ignored="false" />
-    <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/activity/ArticleCrawlerActivitiesClientImpl.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360061169563" ignored="false" />
+    <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/activity/ArticleCrawlerActivitiesClientImpl.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360061541231" ignored="false" />
     <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/workflow/ArticleCrawlerWorkflowClientExternalImpl.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360058132642" ignored="false" />
     <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/workflow/ArticleCrawlerWorkflowClientFactory.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360058132642" ignored="false" />
     <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/workflow/ArticleCrawlerWorkflowClientFactoryImpl.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360058132642" ignored="false" />
     <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/workflow/ArticleCrawlerWorkflowClientImpl.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360058132642" ignored="false" />
     <file path="/ArticleCrawlerActivitiesImpl.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360058413108" ignored="false" />
+    <file path="$PROJECT_DIR$/target/generated-sources/annotations/com/github/vmorev/crawler/awsflow/activity/ArticleCrawlerActivitiesClient.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360061541231" ignored="false" />
+    <file path="/WorkflowExecutionStarter.java" changelist="fa2fe512-a599-4256-9578-b9290abc97b1" time="1360064876535" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,19 +91,37 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="DiffbotCrawlerTest.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/com/github/vmorev/crawler/sitecrawler/diffbot/DiffbotCrawlerTest.java">
+      <file leaf-file-name="ArticleCrawlerWorkflowImpl.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/awsflow/workflow/ArticleCrawlerWorkflowImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="48" column="33" selection-start="1633" selection-end="1633" vertical-scroll-proportion="0.0">
+            <state line="8" column="39" selection-start="423" selection-end="449" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SiteCrawlerActivitiesTest.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/java/com/github/vmorev/crawler/awsflow/workflow/SiteCrawlerActivitiesTest.java">
+      <file leaf-file-name="SiteCrawlerWorkflowImpl.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/awsflow/workflow/SiteCrawlerWorkflowImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="0" selection-start="810" selection-end="810" vertical-scroll-proportion="0.077892326">
+            <state line="17" column="27" selection-start="1055" selection-end="1055" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WorkflowHoster.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/tools/WorkflowHoster.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="20" selection-start="572" selection-end="572" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WorkflowExecutionStarter.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/tools/WorkflowExecutionStarter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="25" column="96" selection-start="1254" selection-end="1254" vertical-scroll-proportion="0.17485714">
               <folding />
             </state>
           </provider>
@@ -138,6 +156,10 @@
         <option value="$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/awsflow/activity/ArticleCrawlerActivities.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/awsflow/workflow/ArticleCrawlerWorkflowImpl.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/github/vmorev/crawler/awsflow/workflow/SiteCrawlerActivitiesTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/github/vmorev/crawler/tools/WorkflowExecutionStarterTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/tools/ActivityHoster.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/tools/WorkflowHoster.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/tools/WorkflowExecutionStarter.java" />
       </list>
     </option>
   </component>
@@ -182,7 +204,7 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -242,6 +264,10 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="crawler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="tools" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -379,6 +405,36 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="tools" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="crawler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="crawler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="crawler" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="awsflow" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -453,23 +509,23 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/src/test/java/com/github/vmorev/crawler" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="options.lastSelected" value="project.propVCSSupport.Mappings" />
+    <property name="options.lastSelected" value="android.dex.compiler" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="recentsLimit" value="5" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="dynamic.classpath" value="false" />
     <property name="options.searchVisible" value="true" />
-    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -519,19 +575,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -557,6 +600,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -654,13 +710,13 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Problems" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39933258" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -740,44 +796,9 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/resources/aws.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="36" selection-start="262" selection-end="262" vertical-scroll-proportion="0.19473082">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/awsflow/AWSHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="0" selection-start="1390" selection-end="1390" vertical-scroll-proportion="0.4089347">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/awsflow/workflow/SiteCrawlerWorkflow.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="42" selection-start="540" selection-end="540" vertical-scroll-proportion="0.2142039">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/awsflow/workflow/ArticleCrawlerWorkflow.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="0" selection-start="336" selection-end="336" vertical-scroll-proportion="0.077892326">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/awsflow/activity/SiteCrawlerActivities.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="13" column="0" selection-start="565" selection-end="565" vertical-scroll-proportion="0.15578465">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/awsflow/workflow/SiteCrawlerWorkflowImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="46" selection-start="1469" selection-end="1469" vertical-scroll-proportion="0.4089347">
           <folding />
         </state>
       </provider>
@@ -810,22 +831,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/awsflow/workflow/ArticleCrawlerWorkflowImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="32" selection-start="840" selection-end="840" vertical-scroll-proportion="0.3115693">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/awsflow/activity/ArticleCrawlerActivitiesImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="25" selection-start="816" selection-end="816" vertical-scroll-proportion="0.33104238">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/beans/Article.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="21" column="38" selection-start="573" selection-end="573" vertical-scroll-proportion="0.38946164">
@@ -833,23 +838,74 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/awsflow/activity/SiteCrawlerActivitiesImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/awsflow/activity/ArticleCrawlerActivitiesImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="41" column="37" selection-start="2043" selection-end="2043" vertical-scroll-proportion="0.8031088">
-          <folding />
+        <state line="7" column="41" selection-start="298" selection-end="326" vertical-scroll-proportion="0.136">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/github/vmorev/crawler/sitecrawler/diffbot/DiffbotCrawlerTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/awsflow/activity/SiteCrawlerActivitiesImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="33" selection-start="1633" selection-end="1633" vertical-scroll-proportion="0.0">
+        <state line="16" column="38" selection-start="715" selection-end="740" vertical-scroll-proportion="0.07771429">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/com/github/vmorev/crawler/awsflow/workflow/SiteCrawlerActivitiesTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="0" selection-start="810" selection-end="810" vertical-scroll-proportion="0.077892326">
+        <state line="51" column="31" selection-start="2078" selection-end="2078" vertical-scroll-proportion="0.7382857">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/github/vmorev/crawler/sitecrawler/diffbot/DiffbotCrawlerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="33" selection-start="1633" selection-end="1633" vertical-scroll-proportion="0.019428572">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/tools/ActivityHoster.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="41" selection-start="862" selection-end="867" vertical-scroll-proportion="0.31085715">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/github/vmorev/crawler/tools/WorkflowExecutionStarterTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="41" column="35" selection-start="1544" selection-end="1544" vertical-scroll-proportion="0.42742857">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/awsflow/workflow/ArticleCrawlerWorkflowImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="39" selection-start="423" selection-end="449" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/awsflow/workflow/SiteCrawlerWorkflowImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="27" selection-start="1055" selection-end="1055" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/tools/WorkflowHoster.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="20" selection-start="572" selection-end="572" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/github/vmorev/crawler/tools/WorkflowExecutionStarter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="96" selection-start="1254" selection-end="1254" vertical-scroll-proportion="0.17485714">
           <folding />
         </state>
       </provider>

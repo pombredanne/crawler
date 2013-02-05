@@ -10,7 +10,8 @@
             <directory>src/main/resources</directory>
             <outputDirectory>lib</outputDirectory>
             <excludes>
-                <exclude>executable</exclude>
+                <exclude>executable/</exclude>
+                <exclude>*.local.json</exclude>
             </excludes>
         </fileSet>
         <fileSet>

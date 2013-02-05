@@ -18,7 +18,10 @@
                 <artifactId>aspectj-maven-plugin</artifactId>
                 <version>1.4</version>
                 <configuration>
-                    <complianceLevel>1.5</complianceLevel>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${java.sourceEncoding}</encoding>
+                    <complianceLevel>${java.version}</complianceLevel>
                     <showWeaveInfo>true</showWeaveInfo>
                     <verbose>true</verbose>
                     <sources>
@@ -33,6 +36,18 @@
                         </source>
                     </sources>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjrt</artifactId>
+                        <version>1.7.1</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjtools</artifactId>
+                        <version>1.7.1</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <goals>
@@ -127,7 +142,7 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
-            <version>1.6.11</version>
+            <version>1.7.1</version>
         </dependency>
         <dependency>
             <groupId>com.amazonaws</groupId>

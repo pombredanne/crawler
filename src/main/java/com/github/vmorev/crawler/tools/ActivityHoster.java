@@ -18,7 +18,7 @@ public class ActivityHoster {
             hostActivity(Class.forName(args[0]));
 
         System.out.println(Class.forName(args[0]) + " started " + workers + " times");
-        System.out.println("Please press any key to terminate service.");
+        System.out.println("Please press ENTER key to terminate service.");
         try {
             //noinspection ResultOfMethodCallIgnored
             System.in.read();
