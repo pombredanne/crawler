@@ -39,7 +39,8 @@ public class WorkflowExecutionStarter {
             Article article = JsonHelper.parseJson(new File(paramName), Article.class);
 
             //Saving article on S3
-            awsHelper.saveS3Object(awsHelper.getS3ArticleBucket(), Article.generateId(awsHelper.getS3ArticleBucket(), article.getUrl()), article);
+            if (awsHelper.getS3Object(awsHelper.getS3ArticleBucket(), Article.generateId(awsHelper.getS3ArticleBucket(), article.getUrl())) == null)
+                awsHelper.saveS3Object(awsHelper.getS3ArticleBucket(), Article.generateId(awsHelper.getS3ArticleBucket(), article.getUrl()), article);
 
             workflowExecution = startArticleFlow(article);
             System.out.println("Started article workflow with workflowId=\"" + workflowExecution.getWorkflowId()
@@ -60,17 +61,20 @@ public class WorkflowExecutionStarter {
                 Site site = JsonHelper.parseJson(new File(paramName), Site.class);
 
                 //Saving site on S3
-                awsHelper.saveS3Object(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()), site);
+                if (awsHelper.getS3Object(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl())) == null)
+                    awsHelper.saveS3Object(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()), site);
 
                 workflowExecution = startSiteFlow(site);
                 System.out.println("Started site workflow with workflowId=\"" + workflowExecution.getWorkflowId()
                         + "\" and runId=\"" + workflowExecution.getRunId() + "\" for " + paramName);
             } else if ("sites".equalsIgnoreCase(flowName)) {
-                List<Site> sites = JsonHelper.parseJson(new File(paramName), new TypeReference<List<Site>>() { });
+                List<Site> sites = JsonHelper.parseJson(new File(paramName), new TypeReference<List<Site>>() {
+                });
 
                 //Saving site on S3
                 for (Site site : sites) {
-                    awsHelper.saveS3Object(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()), site);
+                    if (awsHelper.getS3Object(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl())) == null)
+                        awsHelper.saveS3Object(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()), site);
                     workflowExecution = startSiteFlow(site);
                     System.out.println("Started site workflow with workflowId=\"" + workflowExecution.getWorkflowId()
                             + "\" and runId=\"" + workflowExecution.getRunId() + "\" for " + paramName);
