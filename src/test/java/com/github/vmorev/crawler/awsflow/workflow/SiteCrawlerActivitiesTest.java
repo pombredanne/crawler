@@ -10,15 +10,17 @@ import com.github.vmorev.crawler.beans.Site;
 import com.github.vmorev.crawler.tools.ActivityHoster;
 import com.github.vmorev.crawler.tools.WorkflowExecutionStarter;
 import com.github.vmorev.crawler.tools.WorkflowHoster;
+import com.github.vmorev.crawler.utils.ConfigStorage;
 import com.github.vmorev.crawler.utils.JsonHelper;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class SiteCrawlerActivitiesTest {
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public void setUpClass() throws Exception {
+        ConfigStorage.updateLogger();
     }
 
     @Test

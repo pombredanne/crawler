@@ -1,5 +1,8 @@
 package com.github.vmorev.crawler.utils;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.PropertyConfigurator;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -57,5 +60,10 @@ public class ConfigStorage {
             //just ignore
         }
         return config;
+    }
+
+    public static void updateLogger() {
+        LogManager.resetConfiguration();
+        PropertyConfigurator.configure(ClassLoader.getSystemResource("log4j.local.properties"));
     }
 }

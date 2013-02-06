@@ -8,9 +8,11 @@ import com.github.vmorev.crawler.awsflow.AWSHelper;
 import com.github.vmorev.crawler.beans.Article;
 import com.github.vmorev.crawler.beans.Site;
 import com.github.vmorev.crawler.sitecrawler.SiteCrawler;
+import com.github.vmorev.crawler.utils.ConfigStorage;
 import com.github.vmorev.crawler.utils.JsonHelper;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -25,6 +27,11 @@ import static org.junit.Assert.*;
 public class DiffbotCrawlerTest {
     private AWSHelper awsHelper;
     private AmazonS3 s3;
+
+    @BeforeClass
+    public void setUpClass() throws Exception {
+        ConfigStorage.updateLogger();
+    }
 
     @Before
     public void setUp() throws IOException {

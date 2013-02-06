@@ -2,6 +2,7 @@ package com.github.vmorev.crawler.tools;
 
 import com.amazonaws.services.simpleworkflow.flow.WorkflowWorker;
 import com.github.vmorev.crawler.awsflow.AWSHelper;
+import com.github.vmorev.crawler.utils.ConfigStorage;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -9,6 +10,8 @@ import java.util.concurrent.TimeUnit;
 public class WorkflowHoster {
 
     public static void main(String[] args) throws Exception {
+        ConfigStorage.updateLogger();
+
         if (!(args.length > 1 && args[0] != null && args[0].length() > 0 && args[1] != null && args[1].length() > 0)) {
             System.out.println("Two parameters required: Full workflow class name and # of workers to start");
             System.exit(1);

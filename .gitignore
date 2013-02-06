@@ -1,4 +1,4 @@
 target/
+.idea/
 *.local.json
-.idea/workspace.xml
-.idea/misc.xml
+*.local.properties

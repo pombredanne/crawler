@@ -9,6 +9,7 @@ import com.github.vmorev.crawler.awsflow.AWSHelper;
 import com.github.vmorev.crawler.awsflow.workflow.*;
 import com.github.vmorev.crawler.beans.Article;
 import com.github.vmorev.crawler.beans.Site;
+import com.github.vmorev.crawler.utils.ConfigStorage;
 import com.github.vmorev.crawler.utils.JsonHelper;
 import org.codehaus.jackson.type.TypeReference;
 
@@ -20,6 +21,8 @@ import java.util.List;
 public class WorkflowExecutionStarter {
 
     public static void main(String[] args) throws Exception {
+        ConfigStorage.updateLogger();
+
         if (!(args.length > 1 && args[0] != null && args[0].length() > 0 && args[1] != null && args[1].length() > 0
                 && (args[0].equals("site") || args[0].equals("article") || args[0].equals("sites")))) {
             System.out.println("Two parameters required: flow name (site, sites or article) and file name of json file with site or article content");
