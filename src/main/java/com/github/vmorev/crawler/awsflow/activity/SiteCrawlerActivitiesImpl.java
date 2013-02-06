@@ -1,13 +1,6 @@
 package com.github.vmorev.crawler.awsflow.activity;
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.simpleworkflow.flow.ActivityExecutionContext;
-import com.amazonaws.services.simpleworkflow.flow.ActivityExecutionContextProvider;
-import com.amazonaws.services.simpleworkflow.flow.ActivityExecutionContextProviderImpl;
 import com.github.vmorev.crawler.awsflow.AWSHelper;
 import com.github.vmorev.crawler.beans.Article;
 import com.github.vmorev.crawler.beans.Site;
@@ -16,7 +9,6 @@ import com.github.vmorev.crawler.utils.JsonHelper;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.CancellationException;
 
 public class SiteCrawlerActivitiesImpl implements SiteCrawlerActivities {
 
@@ -28,6 +20,7 @@ public class SiteCrawlerActivitiesImpl implements SiteCrawlerActivities {
 
     public long storeNewArticlesList(Site site) throws Exception {
         SiteCrawler crawler = (SiteCrawler) Class.forName(site.getNewArticlesCrawler()).newInstance();
+        //TODO MAJOR add heartbeat
         List<Article> articles = crawler.getNewArticles(site);
         storeArticles(articles);
         return articles.size();
@@ -49,7 +42,6 @@ public class SiteCrawlerActivitiesImpl implements SiteCrawlerActivities {
     }
 
     public long storeArchivedArticlesList(Site site) throws Exception {
-        //TODO MAJOR add heartbeat
         /*
         try {
             ActivityExecutionContextProvider provider = new ActivityExecutionContextProviderImpl();
@@ -63,6 +55,7 @@ public class SiteCrawlerActivitiesImpl implements SiteCrawlerActivities {
         }
         */
         SiteCrawler crawler = (SiteCrawler) Class.forName(site.getOldArticlesCrawler()).newInstance();
+        //TODO MAJOR add heartbeat
         List<Article> articles = crawler.getArchivedArticles(site);
         if (articles.size() > 0) {
             storeArticles(articles);
