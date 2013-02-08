@@ -1,76 +1,87 @@
 package com.github.vmorev.crawler.awsflow.activity;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.github.vmorev.crawler.sitecrawler.SiteCrawler;
 import com.github.vmorev.crawler.awsflow.AWSHelper;
 import com.github.vmorev.crawler.beans.Article;
 import com.github.vmorev.crawler.beans.Site;
-import com.github.vmorev.crawler.utils.HttpHelper;
+import com.github.vmorev.crawler.sitecrawler.SiteCrawler;
 import com.github.vmorev.crawler.utils.JsonHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 public class SiteCrawlerActivitiesImpl implements SiteCrawlerActivities {
+    private static final Logger log = LoggerFactory.getLogger(SiteCrawlerActivitiesImpl.class);
+
+    public Site getUpdatedSite(Site site) throws IOException {
+        AWSHelper awsHelper = new AWSHelper();
+        AmazonS3 s3 = awsHelper.createS3Client();
+        return JsonHelper.parseJson(s3.getObject(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl())).getObjectContent(), Site.class);
+    }
 
     public long storeNewArticlesList(Site site) throws Exception {
-        SiteCrawler crawler = (SiteCrawler) Class.forName(site.getNewArticlesCrawler()).newInstance();
-        List<Article> articles = crawler.getNewArticles(site);
-        //TODO MAJOR TEST crawler failure
-        storeArticles(articles);
+        List<Article> articles;
+        try {
+            SiteCrawler crawler = (SiteCrawler) Class.forName(site.getNewArticlesCrawler()).newInstance();
+            //TODO MAJOR add heartbeat
+            articles = crawler.getNewArticles(site);
+            storeArticles(articles);
+        } catch (Exception e) {
+            log.info("FAIL. GET NEW ARTICLES. SITE=" + Site.generateId(site.getUrl()), e);
+            throw e;
+        }
         return articles.size();
     }
 
     private void storeArticles(List<Article> articles) throws IOException {
         AWSHelper awsHelper = new AWSHelper();
         AmazonS3 s3 = awsHelper.createS3Client();
-        if (!s3.doesBucketExist(awsHelper.getS3bucket()))
-            s3.createBucket(awsHelper.getS3bucket());
+        if (!s3.doesBucketExist(awsHelper.getS3ArticleBucket()))
+            s3.createBucket(awsHelper.getS3ArticleBucket());
         for (Article article : articles) {
-            //TODO MINOR TEST encoded url saving
-            String key = article.getSiteId() + AWSHelper.S3_NAME_DELIMETER + HttpHelper.encode(article.getUrl()) + AWSHelper.S3_NAME_SUFFIX;
-            if (awsHelper.isS3RewriteAllowed()) {
-                storeArticle(key, article);
+            String key = Article.generateId(article.getSiteId(), article.getUrl());
+            if (awsHelper.getS3Object(awsHelper.getS3ArticleBucket(), key) == null) {
+                log.info("SUCCESS. ADD ARTICLE. KEY=" + key);
+                awsHelper.saveS3Object(awsHelper.getS3ArticleBucket(), key, article);
             } else {
-                if (s3.getObject(awsHelper.getS3bucket(), key) == null) {
-                    //TODO MINOR AWS check to overwrite only empty fields
-                    storeArticle(key, article);
-                } else {
-                    //TODO MEDIUM AWS log if already exist and is not saving
-                }
+                log.info("SUCCESS. OVERWRITE ARTICLE. KEY=" + key);
+                //TODO MINOR overwrite only empty fields
             }
         }
     }
 
-    private void storeArticle(String key, Article article) throws IOException {
-        AWSHelper awsHelper = new AWSHelper();
-        AmazonS3 s3 = awsHelper.createS3Client();
-
-        ObjectMetadata metadata = new ObjectMetadata();
-        //TODO MEDIUM AWS think on separation of metadata and content
-        //metadata.setUserMetadata();
-        s3.putObject(awsHelper.getS3bucket(), key, stringToInputStream(JsonHelper.parseObject(article)), metadata);
-    }
-
     public long storeArchivedArticlesList(Site site) throws Exception {
-        SiteCrawler crawler = (SiteCrawler) Class.forName(site.getOldArticlesCrawler()).newInstance();
-        List<Article> articles = crawler.getArchivedArticles(site);
-        storeArticles(articles);
+        /*
+        try {
+            ActivityExecutionContextProvider provider = new ActivityExecutionContextProviderImpl();
+            ActivityExecutionContext context = provider.getActivityExecutionContext();
+            while (true) {
+                Thread.sleep(1000);
+                context.recordActivityHeartbeat(currentArticle);
+            }
+        } catch(CancellationException ex) {
+            throw ex;
+        }
+        */
+        List<Article> articles;
+        try {
+            SiteCrawler crawler = (SiteCrawler) Class.forName(site.getOldArticlesCrawler()).newInstance();
+            //TODO MAJOR add heartbeat
+            articles = crawler.getArchivedArticles(site);
+            if (articles.size() > 0) {
+                storeArticles(articles);
+
+                site.setArchiveStored(true);
+                AWSHelper awsHelper = new AWSHelper();
+                awsHelper.saveS3Object(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()), site);
+            }
+        } catch (Exception e) {
+            log.info("FAIL. GET OLD ARTICLES. SITE=" + Site.generateId(site.getUrl()), e);
+            throw e;
+        }
         return articles.size();
-    }
-
-    //TODO MINOR LIBRARY move to library
-    private InputStream stringToInputStream(String str) throws UnsupportedEncodingException {
-        return stringToInputStream(str, "UTF8");
-    }
-
-    private InputStream stringToInputStream(String str, String encoding)
-            throws UnsupportedEncodingException {
-        return new ByteArrayInputStream(str.getBytes(encoding));
     }
 
 }

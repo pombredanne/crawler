@@ -4,11 +4,16 @@ import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.simpleworkflow.AmazonSimpleWorkflow;
 import com.amazonaws.services.simpleworkflow.AmazonSimpleWorkflowClient;
 import com.github.vmorev.crawler.utils.ConfigStorage;
+import com.github.vmorev.crawler.utils.HttpHelper;
+import com.github.vmorev.crawler.utils.JsonHelper;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 /**
@@ -18,6 +23,7 @@ import java.util.Map;
 public class AWSHelper {
     public static final String S3_NAME_DELIMETER = "-";
     public static final String S3_NAME_SUFFIX = ".json";
+    public static final String S3_METADATA_FLOWID = "flow-id";
 
     private static final String CONFIG_FILE = "aws.json";
     private static final String ACCESS_KEY = "accessKey";
@@ -25,8 +31,8 @@ public class AWSHelper {
     private static final String SWF_URL = "swfUrl";
     private static final String SWF_DOMAIN = "swfDomain";
     private static final String SWF_TASKLIST = "swfTaskList";
-    private static final String S3_BUCKET = "s3bucket";
-    private static final String S3_REWRITE = "s3rewrite";
+    private static final String S3_ARTICLE_BUCKET = "s3ArticleBucket";
+    private static final String S3_SITE_BUCKET = "s3SiteBucket";
 
     private Map<String, String> config;
 
@@ -34,7 +40,7 @@ public class AWSHelper {
         config = ConfigStorage.getInstance(CONFIG_FILE, Map.class, false);
     }
 
-    private AWSCredentials getCredentials() {
+    public AWSCredentials getCredentials() {
         return new BasicAWSCredentials(config.get(ACCESS_KEY), config.get(SECRET_KEY));
     }
 
@@ -48,6 +54,26 @@ public class AWSHelper {
         return new AmazonS3Client(getCredentials());
     }
 
+    public <T> void saveS3Object(String bucket, String key, T obj) throws IOException {
+        saveS3Object(bucket, key, obj, new ObjectMetadata());
+    }
+
+    public <T> void saveS3Object(String bucket, String key, T obj, ObjectMetadata metadata) throws IOException {
+        InputStream inStream = HttpHelper.stringToInputStream(JsonHelper.parseObject(obj));
+        metadata.setContentLength(inStream.available());
+        createS3Client().putObject(bucket, key, inStream, metadata);
+    }
+
+    public S3Object getS3Object(String bucket, String key) {
+        S3Object obj = null;
+        try {
+            obj = createS3Client().getObject(bucket, key);
+        } catch (Exception e) {
+            //do nothing and return null
+        }
+        return obj;
+    }
+
     public String getSWFDomain() {
         return config.get(SWF_DOMAIN);
     }
@@ -56,11 +82,11 @@ public class AWSHelper {
         return config.get(SWF_TASKLIST);
     }
 
-    public String getS3bucket() {
-        return config.get(S3_BUCKET);
+    public String getS3ArticleBucket() {
+        return config.get(S3_ARTICLE_BUCKET);
     }
 
-    public boolean isS3RewriteAllowed() {
-        return Boolean.valueOf(config.get(S3_REWRITE));
+    public String getS3SiteBucket() {
+        return config.get(S3_SITE_BUCKET);
     }
 }

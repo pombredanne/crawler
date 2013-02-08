@@ -7,6 +7,6 @@
     "swfDomain" : "crawler",
     "swfTaskList" : "crawler",
 
-    "s3bucket" : "crawler",
-    "s3rewrite" : "true"
+    "s3ArticleBucket" : "crawler-articles",
+    "s3SiteBucket" : "crawler-sites"
 }

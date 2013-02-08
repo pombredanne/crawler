@@ -5,10 +5,11 @@
     <artifactId>crawler</artifactId>
     <packaging>jar</packaging>
     <name>crawler</name>
-    <version>0.1</version>
+    <version>0.2</version>
     <properties>
         <java.version>1.7</java.version>
         <java.sourceEncoding>UTF-8</java.sourceEncoding>
+        <aspectj.version>1.7.1</aspectj.version>
     </properties>
     <scm>
         <connection>scm:git:git@github.com:vmorev/crawler.git</connection>
@@ -23,7 +24,10 @@
                 <artifactId>aspectj-maven-plugin</artifactId>
                 <version>1.4</version>
                 <configuration>
-                    <complianceLevel>1.5</complianceLevel>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${java.sourceEncoding}</encoding>
+                    <complianceLevel>${java.version}</complianceLevel>
                     <showWeaveInfo>true</showWeaveInfo>
                     <verbose>true</verbose>
                     <sources>
@@ -38,6 +42,18 @@
                         </source>
                     </sources>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjrt</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjtools</artifactId>
+                        <version>${aspectj.version}</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <goals>
@@ -119,7 +135,7 @@
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
-            <version>1.6.11</version>
+            <version>${aspectj.version}</version>
         </dependency>
         <dependency>
             <groupId>com.amazonaws</groupId>
@@ -156,6 +172,11 @@
         </dependency>
 
         <!-- Logging -->
+        <dependency>
+            <groupId>com.github.vmorev</groupId>
+            <artifactId>amazon-logger</artifactId>
+            <version>1.0</version>
+        </dependency>
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>

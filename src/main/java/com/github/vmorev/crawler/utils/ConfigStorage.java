@@ -1,7 +1,11 @@
 package com.github.vmorev.crawler.utils;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.PropertyConfigurator;
+
 import java.io.IOException;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -26,7 +30,7 @@ public class ConfigStorage {
             synchronized (ConfigStorage.class) {
                 tmpInstance = (T) instances.get(configName);
                 if (tmpInstance == null || reload) {
-                    if (clazz.isInstance(Map.class))
+                    if (clazz.getName().equals(Map.class.getName()))
                         tmpInstance = loadMap(configName, clazz);
                     else
                         tmpInstance = load(configName, clazz);
@@ -47,9 +51,28 @@ public class ConfigStorage {
         try {
             T localConfig = JsonHelper.parseJson(ClassLoader.getSystemResource(configName.replace(".json", ".local.json")), clazz);
             ((Map) config).putAll((Map) localConfig);
-        } catch (IOException e) {
+        } catch (Throwable e) {
+            //just ignore
+        }
+        try {
+            T localConfig = JsonHelper.parseJson(ClassLoader.getSystemResource(configName.replace(".json", ".test.json")), clazz);
+            ((Map) config).putAll((Map) localConfig);
+        } catch (Throwable e) {
             //just ignore
         }
         return config;
+    }
+
+    public static void updateLogger() {
+        Properties props = new Properties();
+        try {
+            props.load(ClassLoader.getSystemResource("log4j.local.properties").openStream());
+            if (!props.isEmpty()) {
+                LogManager.resetConfiguration();
+                PropertyConfigurator.configure(props);
+            }
+        } catch (IOException e) {
+            //just skip, no local config exist
+        }
     }
 }
