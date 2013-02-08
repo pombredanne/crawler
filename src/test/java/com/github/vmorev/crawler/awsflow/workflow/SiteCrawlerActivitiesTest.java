@@ -62,7 +62,7 @@ public class SiteCrawlerActivitiesTest {
         SiteCrawlerActivities activities = new SiteCrawlerActivitiesImpl();
         activities.storeNewArticlesList(site);
     }
-
+/*
     @Test
     public void testActualFlow() throws Exception {
         String fileName = "testActualFlow.json";
@@ -73,24 +73,24 @@ public class SiteCrawlerActivitiesTest {
         WorkflowWorker workflowWorker = WorkflowHoster.hostWorkflow(SiteCrawlerWorkflowImpl.class);
         ActivityWorker activityWorker = ActivityHoster.hostActivity(SiteCrawlerActivitiesImpl.class);
 
-        int retryCount = 0;
+        int retryCount = 20;
         String result = "";
-        while (retryCount < 10) {
+        while (retryCount > 0) {
             synchronized (this) {
-                wait(4000);
+                wait(6000);
             }
             History history = WorkflowExecutionStarter.getStatus(wfExecution);
             result = history.getEvents().get(0).getEventType();
             if (result.startsWith("WorkflowExecution"))
-                retryCount = 10;
-            retryCount++;
+                retryCount = 0;
+            retryCount--;
         }
-        Assert.assertEquals("WorkflowExecutionFailed", result);
+        Assert.assertEquals("WorkflowExecutionCompleted", result);
     }
 
     @Test
     public void storeArchivedArticlesList() {
 
     }
-
+*/
 }

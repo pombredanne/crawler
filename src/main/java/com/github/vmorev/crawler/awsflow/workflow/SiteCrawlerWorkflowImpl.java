@@ -19,10 +19,11 @@ public class SiteCrawlerWorkflowImpl implements SiteCrawlerWorkflow {
     public void startSiteTracking(Site site) {
         Promise<Long> isStored = storeNewArticlesList(site);
 
+/*
         if (!site.isArchiveStored()) {
             isStored = storeOldArticlesList(site, isStored);
         }
-
+*/
         //once per 2 hours
         Promise<Void> timer = clock.createTimer(60 * 60 * 2);
         Promise<Site> updatedSite = getUpdatedSite(site);
