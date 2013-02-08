@@ -29,7 +29,7 @@ public class DiffbotCrawlerTest {
     private AmazonS3 s3;
 
     @BeforeClass
-    public void setUpClass() throws Exception {
+    public static void setUpClass() throws Exception {
         ConfigStorage.updateLogger();
     }
 
@@ -38,11 +38,8 @@ public class DiffbotCrawlerTest {
         awsHelper = new AWSHelper();
         assertTrue(awsHelper.getS3SiteBucket().contains("test"));
         s3 = awsHelper.createS3Client();
-        try {
+        if (!s3.doesBucketExist(awsHelper.getS3SiteBucket()))
             s3.createBucket(awsHelper.getS3SiteBucket());
-        } catch (Exception e) {
-            //ignoring
-        }
     }
 
     @After

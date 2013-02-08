@@ -30,7 +30,7 @@ public class WorkflowExecutionStarterTest {
     private List<WorkflowExecution> executions;
 
     @BeforeClass
-    public void setUpClass() throws Exception {
+    public static void setUpClass() throws Exception {
         ConfigStorage.updateLogger();
     }
 
@@ -40,11 +40,8 @@ public class WorkflowExecutionStarterTest {
         assertTrue(awsHelper.getS3SiteBucket().contains("test"));
         assertTrue(awsHelper.getSWFDomain().contains("test"));
         s3 = awsHelper.createS3Client();
-        try {
+        if (!s3.doesBucketExist(awsHelper.getS3SiteBucket()))
             s3.createBucket(awsHelper.getS3SiteBucket());
-        } catch (Exception e) {
-            //ignoring
-        }
         swfClient = awsHelper.createSWFClient();
         executions = new ArrayList<>();
     }

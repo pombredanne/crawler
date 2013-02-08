@@ -5,6 +5,7 @@ import org.apache.log4j.PropertyConfigurator;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -63,7 +64,15 @@ public class ConfigStorage {
     }
 
     public static void updateLogger() {
-        LogManager.resetConfiguration();
-        PropertyConfigurator.configure(ClassLoader.getSystemResource("log4j.local.properties"));
+        Properties props = new Properties();
+        try {
+            props.load(ClassLoader.getSystemResource("log4j.local.properties").openStream());
+            if (!props.isEmpty()) {
+                LogManager.resetConfiguration();
+                PropertyConfigurator.configure(props);
+            }
+        } catch (IOException e) {
+            //just skip, no local config exist
+        }
     }
 }
