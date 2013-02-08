@@ -1,5 +1,5 @@
 target/
+.idea/
+crawler.iml
 *.local.json
 *.local.properties
-.idea/workspace.xml
-.idea/misc.xml

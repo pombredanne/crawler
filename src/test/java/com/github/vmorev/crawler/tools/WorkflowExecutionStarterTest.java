@@ -9,10 +9,12 @@ import com.amazonaws.services.simpleworkflow.model.RequestCancelWorkflowExecutio
 import com.amazonaws.services.simpleworkflow.model.WorkflowExecution;
 import com.github.vmorev.crawler.awsflow.AWSHelper;
 import com.github.vmorev.crawler.beans.Site;
+import com.github.vmorev.crawler.utils.ConfigStorage;
 import com.github.vmorev.crawler.utils.HttpHelper;
 import com.github.vmorev.crawler.utils.JsonHelper;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -27,17 +29,19 @@ public class WorkflowExecutionStarterTest {
     private AmazonSimpleWorkflow swfClient;
     private List<WorkflowExecution> executions;
 
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+        ConfigStorage.updateLogger();
+    }
+
     @Before
     public void setUp() throws IOException {
         awsHelper = new AWSHelper();
         assertTrue(awsHelper.getS3SiteBucket().contains("test"));
         assertTrue(awsHelper.getSWFDomain().contains("test"));
         s3 = awsHelper.createS3Client();
-        try {
+        if (!s3.doesBucketExist(awsHelper.getS3SiteBucket()))
             s3.createBucket(awsHelper.getS3SiteBucket());
-        } catch (Exception e) {
-            //ignoring
-        }
         swfClient = awsHelper.createSWFClient();
         executions = new ArrayList<>();
     }

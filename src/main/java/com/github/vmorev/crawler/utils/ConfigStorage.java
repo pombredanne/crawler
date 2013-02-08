@@ -1,7 +1,11 @@
 package com.github.vmorev.crawler.utils;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.PropertyConfigurator;
+
 import java.io.IOException;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -57,5 +61,18 @@ public class ConfigStorage {
             //just ignore
         }
         return config;
+    }
+
+    public static void updateLogger() {
+        Properties props = new Properties();
+        try {
+            props.load(ClassLoader.getSystemResource("log4j.local.properties").openStream());
+            if (!props.isEmpty()) {
+                LogManager.resetConfiguration();
+                PropertyConfigurator.configure(props);
+            }
+        } catch (IOException e) {
+            //just skip, no local config exist
+        }
     }
 }
