@@ -1,0 +1,14 @@
+[
+    {
+        "url" : "http://www.afp.com/en/home/",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler"
+    },
+    {
+        "url" : "http://www.ap.org/",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler"
+    },
+    {
+        "url" : "http://www.businessinsider.com/",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler"
+    }
+]

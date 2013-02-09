@@ -1,11 +1,9 @@
-package com.github.vmorev.crawler.sitecrawler.diffbot;
+package com.github.vmorev.crawler.sitecrawler;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.github.vmorev.crawler.awsflow.AWSHelper;
 import com.github.vmorev.crawler.beans.Article;
 import com.github.vmorev.crawler.beans.Site;
-import com.github.vmorev.crawler.sitecrawler.SiteCrawler;
+import com.github.vmorev.crawler.utils.AWSHelper;
+import com.github.vmorev.crawler.utils.DiffbotHelper;
 import com.github.vmorev.crawler.utils.HttpHelper;
 import com.github.vmorev.crawler.utils.JsonHelper;
 
@@ -41,10 +39,8 @@ public class DiffbotSiteCrawler implements SiteCrawler {
             String response = HttpHelper.postResponse(apiUrl, params);
             site.setExternalId(response.substring(response.indexOf("id=\"") + 4, response.indexOf("\">")));
 
-            AWSHelper awsHelper = new AWSHelper();
-            AmazonS3 s3 = awsHelper.createS3Client();
-            ObjectMetadata objectMetadata = s3.getObjectMetadata(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()));
-            awsHelper.saveS3Object(awsHelper.getS3SiteBucket(), Site.generateId(site.getUrl()), site, objectMetadata);
+            AWSHelper helper = new AWSHelper();
+            helper.getS3().saveObject(helper.getConfig().getS3BucketSite(), Site.generateId(site.getUrl()), site);
         }
 
         String apiUrl = "http://www.diffbot.com/api/dfs/dml/archive?output=json&token=" + token + "&id=" + site.getExternalId();
@@ -68,7 +64,8 @@ public class DiffbotSiteCrawler implements SiteCrawler {
                     }
                 }
                 article.setSiteId(Site.generateId(site.getUrl()));
-                if(article.getUrl() != null)
+                article.setArticleCrawler(site.getNewArticlesCrawler());
+                if (article.getUrl() != null)
                     articles.add(article);
             }
         }
@@ -87,12 +84,12 @@ public class DiffbotSiteCrawler implements SiteCrawler {
      * @throws IOException in case of communication errors
      */
     public Article getArticle(Article article) throws IOException {
-        //TODO MAJOR add siteid
         String token = diffbotHelper.getToken();
         String apiUrl = "http://www.diffbot.com/api/article?token=" + token + "&tags=1&comments=1&summary=1&url=" + HttpHelper.encode(article.getUrl());
         String response = HttpHelper.getResponse(apiUrl);
         Article newArticle = JsonHelper.parseJson(response, Article.class);
         newArticle.setUrl(article.getUrl());
+        newArticle.setSiteId(article.getSiteId());
         return newArticle;
     }
 

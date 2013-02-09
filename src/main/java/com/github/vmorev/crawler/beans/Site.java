@@ -1,6 +1,6 @@
 package com.github.vmorev.crawler.beans;
 
-import com.github.vmorev.crawler.awsflow.AWSHelper;
+import com.github.vmorev.crawler.utils.AWSHelper;
 import com.github.vmorev.crawler.utils.HttpHelper;
 
 /**
@@ -13,11 +13,12 @@ public class Site {
     private String externalId;
     private String newArticlesCrawler;
     private String oldArticlesCrawler;
-    private long lcDate;
+    private long lastCheckDate;
+    private long checkInterval;
     private boolean isArchiveStored;
 
     public static String generateId(String url) {
-        return HttpHelper.encode(url) + AWSHelper.S3_NAME_SUFFIX;
+        return HttpHelper.encode(url) + AWSHelper.S3Service.S3_NAME_SUFFIX;
     }
 
     public String getUrl() {
@@ -28,12 +29,12 @@ public class Site {
         this.url = url;
     }
 
-    public long getLcDate() {
-        return lcDate;
+    public long getLastCheckDate() {
+        return lastCheckDate;
     }
 
-    public void setLcDate(long lcDate) {
-        this.lcDate = lcDate;
+    public void setLastCheckDate(long lastCheckDate) {
+        this.lastCheckDate = lastCheckDate;
     }
 
     public String getExternalId() {
@@ -67,4 +68,13 @@ public class Site {
     public void setOldArticlesCrawler(String oldArticlesCrawler) {
         this.oldArticlesCrawler = oldArticlesCrawler;
     }
+
+    public long getCheckInterval() {
+        return checkInterval;
+    }
+
+    public void setCheckInterval(long checkInterval) {
+        this.checkInterval = checkInterval;
+    }
+
 }

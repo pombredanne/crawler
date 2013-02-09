@@ -12,6 +12,7 @@
             <excludes>
                 <exclude>executable/</exclude>
                 <exclude>*.local.json</exclude>
+                <exclude>*.local.properties</exclude>
             </excludes>
         </fileSet>
         <fileSet>
