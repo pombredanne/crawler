@@ -1,9 +1,7 @@
 package com.github.vmorev.crawler.workers;
 
-import com.amazonaws.services.sqs.model.ReceiveMessageRequest;
-import com.amazonaws.services.sqs.model.SendMessageRequest;
+import com.amazonaws.util.BinaryUtils;
 import com.github.vmorev.crawler.AbstractAWSTest;
-import com.github.vmorev.crawler.beans.Article;
 import com.github.vmorev.crawler.beans.Site;
 import com.github.vmorev.crawler.utils.JsonHelper;
 import org.junit.Before;
@@ -12,30 +10,36 @@ import org.junit.Test;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class NewArticlesCrawlerTest extends AbstractAWSTest {
+    private NewArticlesCrawler crawler;
 
     @Before
     public void setUp() throws IOException {
-        String modifier = "-" + System.currentTimeMillis();
-        siteSQSName = helper.getSQSQueueSite() + modifier;
-        articleSQSName = helper.getSQSQueueArticleContent() + modifier;
-        helper.createSQSQueue(siteSQSName);
-        helper.createSQSQueue(articleSQSName);
+        String modifier = "-" + random.nextLong();
+        siteSQSName = helper.getConfig().getSQSQueueSite() + modifier;
+        articleSQSName = helper.getConfig().getSQSQueueArticleContent() + modifier;
+        siteS3Name = helper.getConfig().getS3BucketSite() + modifier;
+        helper.getSQS().createQueue(siteSQSName);
+        helper.getSQS().createQueue(articleSQSName);
+        helper.getS3().createBucket(siteS3Name);
+        crawler = new NewArticlesCrawler();
+        crawler.siteS3Name = siteS3Name;
+        crawler.siteSQSName = siteSQSName;
+        crawler.articleSQSName = articleSQSName;
+        crawler.isTest = true;
     }
 
     @Test
     public void testSiteCrawl() throws Exception {
         String fileName = "NewArticlesCrawler.testSiteCrawl.json";
         Site site = JsonHelper.parseJson(ClassLoader.getSystemResource(fileName), Site.class);
-        String key = Site.generateId(site.getUrl());
 
-        helper.getSQS().sendMessage(new SendMessageRequest(siteSQSName, JsonHelper.parseObject(site)));
-        (new NewArticlesCrawler()).performWork();
+        helper.getSQS().sendMessage(siteSQSName, site);
+        crawler.performWork();
 
-        assertEquals(0, helper.getSQS().receiveMessage(new ReceiveMessageRequest(siteSQSName)).getMessages().size());
-        assertTrue(helper.getSQS().receiveMessage(new ReceiveMessageRequest(articleSQSName)).getMessages().size() > 0);
+        assertEquals(0, helper.getSQS().receiveMessage(siteSQSName).getMessages().size());
+        assertTrue(helper.getSQS().receiveMessage(articleSQSName).getMessages().size() > 0);
     }
 }

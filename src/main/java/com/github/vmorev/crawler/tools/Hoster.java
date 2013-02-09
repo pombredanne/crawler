@@ -2,18 +2,17 @@ package com.github.vmorev.crawler.tools;
 
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
-import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.github.vmorev.crawler.beans.HosterConfig;
 import com.github.vmorev.crawler.beans.Site;
 import com.github.vmorev.crawler.utils.AWSHelper;
 import com.github.vmorev.crawler.utils.ConfigStorage;
+import com.github.vmorev.crawler.utils.HttpHelper;
 import com.github.vmorev.crawler.utils.JsonHelper;
 import com.github.vmorev.crawler.workers.WorkerService;
 import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,7 @@ import java.util.List;
 public class Hoster {
     private static WorkerService service;
     private static final Logger log = LoggerFactory.getLogger(Hoster.class);
-    private static AWSHelper helper;
+    protected static AWSHelper helper;
     protected static String siteSQSName;
     protected static String siteS3Name;
 
@@ -47,8 +46,8 @@ public class Hoster {
             System.exit(0);
         }
 
-        helper.createSQSQueue(helper.getSQSQueueArticleContent());
-        helper.createSQSQueue(helper.getSQSQueueSite());
+        helper.getSQS().createQueue(helper.getConfig().getSQSQueueArticleContent());
+        helper.getSQS().createQueue(helper.getConfig().getSQSQueueSite());
 
         //start workers
         service = new WorkerService();
@@ -68,16 +67,16 @@ public class Hoster {
     }
 
     protected static void saveSites(String sitesFileName) {
-        if (sitesFileName != null && sitesFileName.length() > 0)
+        if (!(sitesFileName != null && sitesFileName.length() > 0))
             return;
         if (siteS3Name == null)
-            siteS3Name = helper.getS3BucketSite();
+            siteS3Name = helper.getConfig().getS3BucketSite();
         try {
-            List<Site> sites = JsonHelper.parseJson(new File(sitesFileName), new TypeReference<List<Site>>() {
+            List<Site> sites = JsonHelper.parseJson(HttpHelper.inputStreamToString(ClassLoader.getSystemResource(sitesFileName).openStream(), "UTF8"), new TypeReference<List<Site>>() {
             });
             for (Site site : sites) {
-                if (helper.getS3Object(siteS3Name, Site.generateId(site.getUrl()), Site.class) == null) {
-                    helper.saveS3Object(siteS3Name, Site.generateId(site.getUrl()), site);
+                if (helper.getS3().getObject(siteS3Name, Site.generateId(site.getUrl()), Site.class) == null) {
+                    helper.getS3().saveObject(siteS3Name, Site.generateId(site.getUrl()), site);
                     log.info("SUCCESS. " + Hoster.class.getSimpleName() + ". SITE ADDED TO S3 " + site.getUrl());
                 }
             }
@@ -101,11 +100,11 @@ public class Hoster {
 
     protected static void checkSites() {
         if (siteSQSName == null)
-            siteSQSName = helper.getSQSQueueSite();
+            siteSQSName = helper.getConfig().getSQSQueueSite();
         try {
             List<Site> sites = getSitesToCrawl();
             for (Site site : sites) {
-                helper.getSQS().sendMessage(new SendMessageRequest(siteSQSName, JsonHelper.parseObject(site)));
+                helper.getSQS().sendMessage(siteSQSName, site);
                 log.info("SUCCESS. " + Hoster.class.getSimpleName() + ". SITE ADDED TO SQS " + site.getUrl());
             }
         } catch (IOException e) {
@@ -115,13 +114,14 @@ public class Hoster {
 
     private static List<Site> getSitesToCrawl() throws IOException {
         if (siteS3Name == null)
-            siteS3Name = helper.getS3BucketSite();
+            siteS3Name = helper.getConfig().getS3BucketSite();
         List<Site> sites = new ArrayList<>();
         //get all sites
-        ObjectListing objectListing = helper.getS3().listObjects(siteS3Name);
+        //TODO think of moving to helper
+        ObjectListing objectListing = helper.getS3().getS3().listObjects(siteS3Name);
         do {
             for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
-                Site site = helper.getS3Object(siteS3Name, objectSummary.getKey(), Site.class);
+                Site site = helper.getS3().getObject(siteS3Name, objectSummary.getKey(), Site.class);
                 //check if it's time to put in queue
                 if (System.currentTimeMillis() > (site.getLastCheckDate() + site.getCheckInterval())) {
                     //site can be in queue already but we will re-check date in consumer

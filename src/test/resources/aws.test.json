@@ -1,0 +1,7 @@
+{
+    "s3Article" : "test-crawler-articles",
+    "s3Site" : "test-crawler-sites",
+
+    "sqsArticleContent" : "test-crawler-articles-content",
+    "sqsSite" : "test-crawler-sites"
+}

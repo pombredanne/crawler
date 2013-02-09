@@ -1,5 +1,6 @@
 package com.github.vmorev.crawler.utils;
 
+import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
@@ -7,8 +8,10 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClient;
-import com.amazonaws.services.sqs.model.CreateQueueRequest;
+import com.amazonaws.services.sqs.model.*;
+import com.amazonaws.util.BinaryUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,108 +23,186 @@ import java.util.Map;
  * Date: 21.01.13
  */
 public class AWSHelper {
-    public static final String S3_NAME_DELIMETER = "-";
-    public static final String S3_NAME_SUFFIX = ".json";
-    public static final String S3_METADATA_FLOWID = "flow-id";
-
-    private static final String CONFIG_FILE = "aws.json";
-    private static final String ACCESS_KEY = "accessKey";
-    private static final String SECRET_KEY = "secretKey";
-    private static final String SQS_ARTICLE_CONTENT = "sqsArticleContent";
-    private static final String S3_ARTICLE = "s3Article";
-    private static final String S3_SITE = "s3Site";
-    private static final String SQS_SITE = "sqsSite";
-
-    private Map<String, String> config;
     private AWSCredentials credentials;
-    private AmazonSQSClient sqs;
-    private AmazonS3 s3;
+    private SQSService sqs;
+    private S3Service s3;
+    private ConfigService config;
 
     public AWSHelper() throws IOException {
-        config = ConfigStorage.getInstance(CONFIG_FILE, Map.class, false);
+        config = new ConfigService();
+        sqs = new SQSService();
+        s3 = new S3Service();
     }
 
-    public AWSCredentials getCredentials() {
+    private AWSCredentials getCredentials() {
         if (credentials == null)
-        credentials = new BasicAWSCredentials(config.get(ACCESS_KEY), config.get(SECRET_KEY));
+            credentials = new BasicAWSCredentials(config.getAccessKey(), config.getSecretKey());
         return credentials;
     }
 
-    public AmazonSQSClient getSQS() {
-        if (sqs == null)
-            sqs = new AmazonSQSClient(getCredentials());
+    public SQSService getSQS() {
         return sqs;
     }
 
-    public AmazonS3 getS3() throws IOException {
-        if (s3 == null)
-            s3 = new AmazonS3Client(getCredentials());
+    public S3Service getS3() {
         return s3;
     }
 
-    public <T> void saveS3Object(String bucket, String key, T obj) throws IOException {
-        saveS3Object(bucket, key, obj, new ObjectMetadata());
+    public ConfigService getConfig() {
+        return config;
     }
 
-    public <T> void saveS3Object(String bucket, String key, T obj, ObjectMetadata metadata) throws IOException {
-        InputStream inStream = HttpHelper.stringToInputStream(JsonHelper.parseObject(obj));
-        metadata.setContentLength(inStream.available());
-        getS3().putObject(bucket, key, inStream, metadata);
-    }
+    public class ConfigService {
+        private static final String S3_ARTICLE = "s3Article";
+        private static final String S3_SITE = "s3Site";
+        private static final String SQS_SITE = "sqsSite";
+        private static final String CONFIG_FILE = "aws.json";
+        private static final String ACCESS_KEY = "accessKey";
+        private static final String SECRET_KEY = "secretKey";
+        private static final String SQS_ARTICLE_CONTENT = "sqsArticleContent";
 
-    public <T> T getS3Object(String bucket, String key, Class<T> clazz) {
-        T obj = null;
-        try {
-            obj = JsonHelper.parseJson(getS3().getObject(bucket, key).getObjectContent(), clazz);
-        } catch (Exception e) {
-            //do nothing and return null
+        private Map<String, String> configStorage;
+
+        public ConfigService() throws IOException {
+            configStorage = ConfigStorage.getInstance(CONFIG_FILE, Map.class, false);
         }
-        return obj;
+
+        protected String getAccessKey() {
+            return configStorage.get(ACCESS_KEY);
+        }
+
+        protected String getSecretKey() {
+            return configStorage.get(SECRET_KEY);
+        }
+
+        public String getS3BucketArticle() {
+            return configStorage.get(S3_ARTICLE);
+        }
+
+        public String getS3BucketSite() {
+            return configStorage.get(S3_SITE);
+        }
+
+        public String getSQSQueueArticleContent() {
+            return configStorage.get(SQS_ARTICLE_CONTENT);
+        }
+
+        public String getSQSQueueSite() {
+            return configStorage.get(SQS_SITE);
+        }
     }
 
-    public void deleteS3Bucket(String bucketName) throws IOException {
-        AmazonS3 s3 = getS3();
-        ObjectListing objectListing = s3.listObjects(bucketName);
-        do {
-            for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries())
-                s3.deleteObject(bucketName, objectSummary.getKey());
-            objectListing.setMarker(objectListing.getNextMarker());
-        } while (objectListing.isTruncated());
-        s3.deleteBucket(bucketName);
+    public class S3Service {
+        public static final String S3_NAME_DELIMETER = "-";
+        public static final String S3_NAME_SUFFIX = ".json";
+
+        private AmazonS3 s3;
+
+        public AmazonS3 getS3() throws IOException {
+            if (s3 == null)
+                s3 = new AmazonS3Client(getCredentials());
+            return s3;
+        }
+
+        public void createBucket(String bucket) throws IOException {
+            if (!getS3().doesBucketExist(bucket))
+                getS3().createBucket(bucket);
+
+        }
+
+        public void deleteBucket(String bucketName) throws IOException {
+            AmazonS3 s3 = getS3();
+            ObjectListing objectListing = s3.listObjects(bucketName);
+            do {
+                for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries())
+                    s3.deleteObject(bucketName, objectSummary.getKey());
+                objectListing.setMarker(objectListing.getNextMarker());
+            } while (objectListing.isTruncated());
+            s3.deleteBucket(bucketName);
+
+        }
+
+        public <T> T getObject(String bucket, String key, Class<T> clazz) {
+            T obj = null;
+            try {
+                obj = JsonHelper.parseJson(getS3().getObject(bucket, key).getObjectContent(), clazz);
+            } catch (Exception e) {
+                //do nothing and return null
+            }
+            return obj;
+        }
+
+        public <T> void saveObject(String bucket, String key, T obj) throws IOException {
+            saveObject(bucket, key, obj, new ObjectMetadata());
+        }
+
+        public <T> void saveObject(String bucket, String key, T obj, ObjectMetadata metadata) throws IOException {
+            InputStream inStream = HttpHelper.stringToInputStream(JsonHelper.parseObject(obj));
+            metadata.setContentLength(inStream.available());
+            getS3().putObject(bucket, key, inStream, metadata);
+        }
 
     }
 
-    public void createSQSQueue(String name) {
-        AmazonSQSClient sqs = getSQS();
-        List<String> urls = sqs.listQueues().getQueueUrls();
-        for (String url : urls)
-            if (url.endsWith(name))
-                return;
+    public class SQSService {
+        private AmazonSQS sqs;
 
-        CreateQueueRequest request = new CreateQueueRequest();
-        request.setQueueName(name);
-        sqs.createQueue(request);
-    }
+        private String getQueueURL(String queueName) {
+            return getSQS().getQueueUrl(new GetQueueUrlRequest(queueName)).getQueueUrl();
+        }
 
-    public String getS3BucketArticle() {
-        return config.get(S3_ARTICLE);
-    }
+        public AmazonSQS getSQS() {
+            if (sqs == null) {
+                sqs = new AmazonSQSClient(getCredentials(), new ClientConfiguration());
+                sqs.setEndpoint("https://sqs.us-east-1.amazonaws.com");
+            }
+            return sqs;
+        }
 
-    public String getS3BucketSite() {
-        return config.get(S3_SITE);
-    }
+        public void createQueue(String queueName) {
+            List<String> urls = getSQS().listQueues().getQueueUrls();
+            for (String url : urls)
+                if (url.equals(queueName))
+                    return;
 
-    public String getSQSQueueArticleContent() {
-        return config.get(SQS_ARTICLE_CONTENT);
-    }
+            CreateQueueRequest request = new CreateQueueRequest();
+            request.setQueueName(queueName);
+            getSQS().createQueue(request);
+        }
 
-    public String getSQSQueueSite() {
-        return config.get(SQS_SITE);
-    }
+        public void deleteQueue(String queueName) throws IOException {
+            getSQS().deleteQueue(new DeleteQueueRequest(getQueueURL(queueName)));
+        }
 
-    public void createS3Bucket(String bucket) throws IOException {
-        if (!getS3().doesBucketExist(bucket))
-            getS3().createBucket(bucket);
+        public void sendMessage(String queueName, Object obj) throws IOException {
+            getSQS().sendMessage(new SendMessageRequest(getQueueURL(queueName), BinaryUtils.toBase64(JsonHelper.parseObject(obj).getBytes("UTF-8"))));
+        }
 
+        public ReceiveMessageResult receiveMessage(String queueName, int timeout) {
+            ReceiveMessageRequest request = new ReceiveMessageRequest(getQueueURL(queueName));
+            request.setVisibilityTimeout(timeout);
+            //TODO MINOR request.setMaxNumberOfMessages();
+            return getSQS().receiveMessage(request);
+        }
+
+        public ReceiveMessageResult receiveMessage(String queueName) {
+            ReceiveMessageRequest request = new ReceiveMessageRequest(getQueueURL(queueName));
+            //TODO MINOR request.setMaxNumberOfMessages();
+            return getSQS().receiveMessage(request);
+        }
+
+        public void deleteMessage(String queueName, String receiptHandle) {
+            getSQS().deleteMessage(new DeleteMessageRequest(getQueueURL(queueName), receiptHandle));
+        }
+
+        public <T> T decodeMessage(Message m, Class<T> clazz) throws IOException {
+            String mBody = m.getBody();
+            if (!mBody.startsWith("{")) {
+                mBody = new String(BinaryUtils.fromBase64(mBody));
+            }
+            mBody = mBody.replace("\\\"", "\"");
+
+            return JsonHelper.parseJson(mBody, clazz);
+        }
     }
 }

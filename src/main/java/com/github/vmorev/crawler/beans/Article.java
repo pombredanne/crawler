@@ -22,7 +22,7 @@ public class Article {
     //private String numPages;
 
     public static String generateId(String siteId, String url) {
-        return siteId + AWSHelper.S3_NAME_DELIMETER + HttpHelper.encode(url) + AWSHelper.S3_NAME_SUFFIX;
+        return siteId + AWSHelper.S3Service.S3_NAME_DELIMETER + HttpHelper.encode(url) + AWSHelper.S3Service.S3_NAME_SUFFIX;
     }
 
     public String getArticleCrawler() {

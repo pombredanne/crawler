@@ -1,6 +1,5 @@
 package com.github.vmorev.crawler.utils;
 
-import com.github.vmorev.crawler.beans.Site;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
@@ -8,7 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.List;
 
 /**
  * User: Valentin_Morev

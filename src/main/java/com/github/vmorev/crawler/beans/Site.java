@@ -18,7 +18,7 @@ public class Site {
     private boolean isArchiveStored;
 
     public static String generateId(String url) {
-        return HttpHelper.encode(url) + AWSHelper.S3_NAME_SUFFIX;
+        return HttpHelper.encode(url) + AWSHelper.S3Service.S3_NAME_SUFFIX;
     }
 
     public String getUrl() {

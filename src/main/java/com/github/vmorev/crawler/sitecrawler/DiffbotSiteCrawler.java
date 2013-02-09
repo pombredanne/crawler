@@ -40,7 +40,7 @@ public class DiffbotSiteCrawler implements SiteCrawler {
             site.setExternalId(response.substring(response.indexOf("id=\"") + 4, response.indexOf("\">")));
 
             AWSHelper helper = new AWSHelper();
-            helper.saveS3Object(helper.getS3BucketSite(), Site.generateId(site.getUrl()), site);
+            helper.getS3().saveObject(helper.getConfig().getS3BucketSite(), Site.generateId(site.getUrl()), site);
         }
 
         String apiUrl = "http://www.diffbot.com/api/dfs/dml/archive?output=json&token=" + token + "&id=" + site.getExternalId();

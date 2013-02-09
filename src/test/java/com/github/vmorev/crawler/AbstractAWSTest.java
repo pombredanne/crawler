@@ -1,15 +1,12 @@
 package com.github.vmorev.crawler;
 
-import com.amazonaws.services.sqs.model.DeleteQueueRequest;
 import com.github.vmorev.crawler.utils.AWSHelper;
 import com.github.vmorev.crawler.utils.ConfigStorage;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 
 import java.io.IOException;
-
-import static org.junit.Assert.assertTrue;
+import java.util.Random;
 
 /**
  * User: valentin
@@ -17,6 +14,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class AbstractAWSTest {
     protected static AWSHelper helper;
+    protected static Random random;
     protected String articleSQSName;
     protected String articleS3Name;
     protected String siteSQSName;
@@ -26,21 +24,22 @@ public class AbstractAWSTest {
     public static void setUpClass() throws Exception {
         ConfigStorage.updateLogger();
         helper = new AWSHelper();
+        random = new Random();
     }
 
     @After
     public void cleanUp() throws IOException {
         if (articleSQSName != null)
-            helper.getSQS().deleteQueue(new DeleteQueueRequest(articleSQSName));
+            helper.getSQS().deleteQueue(articleSQSName);
 
         if (siteSQSName != null)
-            helper.getSQS().deleteQueue(new DeleteQueueRequest(siteSQSName));
+            helper.getSQS().deleteQueue(siteSQSName);
 
         if (articleS3Name != null)
-            helper.deleteS3Bucket(articleS3Name);
+            helper.getS3().deleteBucket(articleS3Name);
 
         if (siteS3Name != null)
-            helper.deleteS3Bucket(siteS3Name);
+            helper.getS3().deleteBucket(siteS3Name);
     }
 
 }

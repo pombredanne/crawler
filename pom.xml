@@ -18,6 +18,18 @@
     </scm>
     <build>
         <finalName>${project.artifactId}</finalName>
+        <!--
+        //TODO major exclude locals
+        resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>executable/</exclude>
+                    <exclude>*.local.json</exclude>
+                    <exclude>*.local.properties</exclude>
+                </excludes>
+            </resource>
+        </resources-->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -34,8 +46,10 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.12.3</version>
                 <configuration>
-                    <parallel>methods</parallel>
-                    <perCoreThreadCount>true</perCoreThreadCount>
+                    <!--
+                    //TODO major enable parallel
+                    parallel>classes</parallel>
+                    <perCoreThreadCount>true</perCoreThreadCount-->
                     <argLine>-Xmx256m</argLine>
                 </configuration>
             </plugin>
