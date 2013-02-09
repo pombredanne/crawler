@@ -2,441 +2,386 @@
     {
         "url" : "http://www.afp.com/en/home/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.ap.org/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.businessinsider.com/",
-        "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "externalId" : "462369",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.businesswire.com/portal/site/home/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.france24.com/en/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://crowdedbrain.co.uk/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.vincentabry.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.thedailymuse.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.starkinsider.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.prnewswire.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.itn.co.uk/Home/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.imediamonkey.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.pocket-lint.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.productreview.com.au/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.wired.co.uk/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.wired.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.t3.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.techradar.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://techcrunch.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.technologyblogged.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.techweekeurope.co.uk/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://thenextweb.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.tomsguide.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.tomshardware.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.appzapp.net/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.intomobile.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.mobileinquirer.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://tabtimes.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.talkandroid.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://theappplanet.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.vg247.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.vgchartz.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.slidetoplay.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://ready-up.net/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.pocketgamer.co.uk/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.pcgamer.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.pocketgamer.co.uk/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.nowgamer.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.linkdeadgaming.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.kjbcast.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://iphonegamerblog.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.imediamonkey.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.nintendo-insider.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.gamesindustry.biz/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.gamrreview.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.gamerzines.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.goldenjoystick.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.gamerzines.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.eurogamer.net/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.ea.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.edge-online.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.computerandvideogames.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.crowdedbrain.co.uk/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://www.criticalgamer.co.uk/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     },
     {
         "url" : "http://androidheadlines.com/",
         "externalId" : "",
-        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.diffbot.DiffbotSiteCrawler",
-        "lcDate" : "",
+        "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
+        "oldArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler",
         "isArchiveStored" : ""
     }
 ]

@@ -1,6 +1,6 @@
 package com.github.vmorev.crawler.beans;
 
-import com.github.vmorev.crawler.awsflow.AWSHelper;
+import com.github.vmorev.crawler.utils.AWSHelper;
 import com.github.vmorev.crawler.utils.HttpHelper;
 
 /**
@@ -15,6 +15,7 @@ public class Article {
     private String cDate;
     private String author;
     private String siteId;
+    private String articleCrawler;
 
     //TODO MINOR DIFFBOT check if next page param is required
     //private String nextPage;
@@ -22,6 +23,14 @@ public class Article {
 
     public static String generateId(String siteId, String url) {
         return siteId + AWSHelper.S3_NAME_DELIMETER + HttpHelper.encode(url) + AWSHelper.S3_NAME_SUFFIX;
+    }
+
+    public String getArticleCrawler() {
+        return articleCrawler;
+    }
+
+    public void setArticleCrawler(String articleCrawler) {
+        this.articleCrawler = articleCrawler;
     }
 
     public String getText() {

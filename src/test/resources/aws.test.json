@@ -1,8 +1,0 @@
-{
-    "swfDomain" : "test-crawler",
-    "swfTaskList" : "crawler",
-
-    "s3ArticleBucket" : "test-crawler-articles",
-    "s3SiteBucket" : "test-crawler-sites",
-    "s3rewrite" : "true"
-}
