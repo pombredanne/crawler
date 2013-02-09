@@ -1,0 +1,5 @@
+{
+    "url" : "http://www.cnn.com",
+    "externalId" : "538",
+    "newArticlesCrawler" : "com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler"
+}
