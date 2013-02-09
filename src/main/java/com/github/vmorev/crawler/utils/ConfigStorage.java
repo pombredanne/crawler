@@ -43,7 +43,7 @@ public class ConfigStorage {
     }
 
     private static <T> T load(String configName, Class<T> clazz) throws IOException {
-        return JsonHelper.parseJson(HttpHelper.inputStreamToString(ClassLoader.getSystemResource(configName).openStream(), "UTF8"), clazz);
+        return JsonHelper.parseJson(ClassLoader.getSystemResource(configName), clazz);
     }
 
     private static <T> T loadMap(String configName, Class<T> clazz) throws IOException {
@@ -67,6 +67,16 @@ public class ConfigStorage {
         Properties props = new Properties();
         try {
             props.load(ClassLoader.getSystemResource("log4j.local.properties").openStream());
+            if (!props.isEmpty()) {
+                LogManager.resetConfiguration();
+                PropertyConfigurator.configure(props);
+            }
+        } catch (IOException e) {
+            //just skip, no local config exist
+        }
+        props = new Properties();
+        try {
+            props.load(ClassLoader.getSystemResource("log4j.test.properties").openStream());
             if (!props.isEmpty()) {
                 LogManager.resetConfiguration();
                 PropertyConfigurator.configure(props);

@@ -1,4 +1,4 @@
-package com.github.vmorev.crawler.sitecrawler.diffbot;
+package com.github.vmorev.crawler.utils;
 
 import com.github.vmorev.crawler.utils.ConfigStorage;
 

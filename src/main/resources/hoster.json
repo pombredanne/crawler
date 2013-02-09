@@ -1,0 +1,16 @@
+{
+    "defaultSiteCheckInterval" : 360000,
+    "hosterSleepInterval" : 60000,
+    "sitesFileName" : "",
+
+    "workers" : [
+        {
+            "className" : "com.github.vmorev.crawler.workers.NewArticlesCrawler",
+            "threads" : 2
+        },
+        {
+            "className" : "com.github.vmorev.crawler.workers.ArticleContentCrawler",
+            "threads" : 5
+        }
+    ]
+}
