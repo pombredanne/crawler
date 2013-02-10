@@ -48,3 +48,7 @@ log4j.appender.s3logger.s3logBucket=LOGS_BUCKET
 log4j.appender.s3logger.batchSize=BATCH_SIZE
 ```
 
+##TODO list:
+- [] small memory leak detected
+- [] texts should be encoded before parsing to JSON
+- [] statistic module should be created

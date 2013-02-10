@@ -1,6 +1,7 @@
 package com.github.vmorev.crawler.beans;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: valentin
@@ -10,28 +11,7 @@ public class HosterConfig {
     private long defaultSiteCheckInterval;
     private long hosterSleepInterval;
     private String sitesFileName;
-    private List<Worker> workers;
-
-    public class Worker {
-        private String className;
-        private long threads;
-
-        public String getClassName() {
-            return className;
-        }
-
-        public void setClassName(String className) {
-            this.className = className;
-        }
-
-        public long getThreads() {
-            return threads;
-        }
-
-        public void setThreads(long threads) {
-            this.threads = threads;
-        }
-    }
+    private List<Map> workers;
 
     public long getDefaultSiteCheckInterval() {
         return defaultSiteCheckInterval;
@@ -60,11 +40,11 @@ public class HosterConfig {
         this.sitesFileName = sitesFileName;
     }
 
-    public List<Worker> getWorkers() {
+    public List<Map> getWorkers() {
         return workers;
     }
 
-    public void setWorkers(List<Worker> workers) {
+    public void setWorkers(List<Map> workers) {
         this.workers = workers;
     }
 }
