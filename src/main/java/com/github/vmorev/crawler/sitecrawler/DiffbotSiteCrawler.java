@@ -18,6 +18,7 @@ import java.util.Map;
  */
 public class DiffbotSiteCrawler implements SiteCrawler {
     private DiffbotHelper diffbotHelper;
+    protected String siteS3Name;
 
     public DiffbotSiteCrawler() throws IOException {
         this.diffbotHelper = new DiffbotHelper();
@@ -40,7 +41,9 @@ public class DiffbotSiteCrawler implements SiteCrawler {
             site.setExternalId(response.substring(response.indexOf("id=\"") + 4, response.indexOf("\">")));
 
             AWSHelper helper = new AWSHelper();
-            helper.getS3().saveObject(helper.getConfig().getS3BucketSite(), Site.generateId(site.getUrl()), site);
+            if (siteS3Name == null)
+                siteS3Name = helper.getConfig().getS3BucketSite();
+            helper.getS3().saveObject(siteS3Name, Site.generateId(site.getUrl()), site);
         }
 
         String apiUrl = "http://www.diffbot.com/api/dfs/dml/archive?output=json&token=" + token + "&id=" + site.getExternalId();

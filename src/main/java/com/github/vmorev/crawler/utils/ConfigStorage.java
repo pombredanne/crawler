@@ -71,7 +71,7 @@ public class ConfigStorage {
                 LogManager.resetConfiguration();
                 PropertyConfigurator.configure(props);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             //just skip, no local config exist
         }
         props = new Properties();
@@ -81,7 +81,7 @@ public class ConfigStorage {
                 LogManager.resetConfiguration();
                 PropertyConfigurator.configure(props);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             //just skip, no local config exist
         }
     }

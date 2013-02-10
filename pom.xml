@@ -5,7 +5,7 @@
     <artifactId>crawler</artifactId>
     <packaging>jar</packaging>
     <name>crawler</name>
-    <version>0.3</version>
+    <version>0.4</version>
     <properties>
         <java.version>1.7</java.version>
         <java.sourceEncoding>UTF-8</java.sourceEncoding>
@@ -47,10 +47,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.12.3</version>
                 <configuration>
-                    <!--
-                    //TODO major enable parallel
-                    parallel>classes</parallel>
-                    <perCoreThreadCount>true</perCoreThreadCount-->
+                    <parallel>classes</parallel>
+                    <perCoreThreadCount>true</perCoreThreadCount>
                     <argLine>-Xmx256m</argLine>
                 </configuration>
             </plugin>

@@ -119,7 +119,6 @@ public class AWSHelper {
                 objectListing.setMarker(objectListing.getNextMarker());
             } while (objectListing.isTruncated());
             s3.deleteBucket(bucketName);
-
         }
 
         public <T> T getObject(String bucket, String key, Class<T> clazz) {
@@ -147,7 +146,7 @@ public class AWSHelper {
     public class SQSService {
         private AmazonSQS sqs;
 
-        private String getQueueURL(String queueName) {
+        public String getQueueURL(String queueName) {
             return getSQS().getQueueUrl(new GetQueueUrlRequest(queueName)).getQueueUrl();
         }
 

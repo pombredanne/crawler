@@ -1,6 +1,5 @@
 package com.github.vmorev.crawler.workers;
 
-import com.amazonaws.util.BinaryUtils;
 import com.github.vmorev.crawler.AbstractAWSTest;
 import com.github.vmorev.crawler.beans.Site;
 import com.github.vmorev.crawler.utils.JsonHelper;

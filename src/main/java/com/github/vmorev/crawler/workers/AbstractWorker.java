@@ -65,4 +65,7 @@ public abstract class AbstractWorker implements Runnable {
         }
     }
 
+    public void setSleepTime(int sleepTime) {
+        this.sleepTime = sleepTime;
+    }
 }
