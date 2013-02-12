@@ -20,11 +20,11 @@ public class Cleaner {
     public static void main(String[] args) throws Exception {
         helper = new AWSHelper();
         exceptionsBuckets = new ArrayList<>();
-//        exceptionsBuckets.add(helper.getConfig().getS3BucketSite());
-//        exceptionsBuckets.add(helper.getConfig().getS3BucketArticle());
+//        exceptionsBuckets.add(helper.getConfig().getS3Site());
+//        exceptionsBuckets.add(helper.getConfig().getS3Article());
         exceptionsQueues = new ArrayList<>();
-//        exceptionsQueues.add(helper.getSQS().getQueueURL(helper.getConfig().getSQSQueueSite()));
-//        exceptionsQueues.add(helper.getSQS().getQueueURL(helper.getConfig().getSQSQueueArticleContent()));
+//        exceptionsQueues.add(helper.getSQS().getQueueURL(helper.getConfig().getSQSSite()));
+//        exceptionsQueues.add(helper.getSQS().getQueueURL(helper.getConfig().getSQSArticle()));
         deleteAllBuckets();
         deleteAllQueues();
     }

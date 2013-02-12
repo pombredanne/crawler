@@ -1,6 +1,6 @@
 {
-    "defaultSiteCheckInterval" : 360000,
-    "hosterSleepInterval" : 60000,
+    "defaultSiteCheckInterval" : 18000000,
+    "hosterSleepInterval" : 300000,
     "sitesFileName" : "sites.json",
 
     "workers" : [
@@ -10,8 +10,13 @@
             "sleepTime" : 10800000
         },
         {
+            "className" : "com.github.vmorev.crawler.workers.LogsAnalyzer",
+            "threads" : 1,
+            "sleepTime" : 1800000
+        },
+        {
             "className" : "com.github.vmorev.crawler.workers.NewArticlesCrawler",
-            "threads" : 2
+            "threads" : 1
         },
         {
             "className" : "com.github.vmorev.crawler.workers.ArticleContentCrawler",

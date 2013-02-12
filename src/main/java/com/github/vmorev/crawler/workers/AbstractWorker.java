@@ -39,6 +39,14 @@ public abstract class AbstractWorker implements Runnable {
         //thread will work till external interruption signal
         while (!Thread.currentThread().isInterrupted()) {
             try {
+                try {
+                    //perform work
+                    performWork();
+                } catch (ExecutionFailureException e) {
+                    //decrease retry count on failure
+                    currentRetryCount--;
+                }
+
                 //check if thread is ready to sleep
                 if (isReadyToSleep()) {
                     synchronized (this) {
@@ -48,14 +56,6 @@ public abstract class AbstractWorker implements Runnable {
                         //get initial retry count after sleep
                         currentRetryCount = defaultRetryCount;
                     }
-                }
-
-                try {
-                    //perform work
-                    performWork();
-                } catch (ExecutionFailureException e) {
-                    //decrease retry count on failure
-                    currentRetryCount--;
                 }
             } catch (InterruptedException e) {
                 //using System.out due to unavailability of logger during interruption time

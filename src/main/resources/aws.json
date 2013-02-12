@@ -4,6 +4,8 @@
 
     "s3Article" : "crawler-articles",
     "s3Site" : "crawler-sites",
+    "s3Logs" : "crawler-logs",
+    "s3LogsStat" : "crawler-logs-stat",
 
     "sqsArticleContent" : "crawler-articles-content",
     "sqsSite" : "crawler-sites"

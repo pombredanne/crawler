@@ -42,8 +42,8 @@ public class DiffbotSiteCrawler implements SiteCrawler {
 
             AWSHelper helper = new AWSHelper();
             if (siteS3Name == null)
-                siteS3Name = helper.getConfig().getS3BucketSite();
-            helper.getS3().saveObject(siteS3Name, Site.generateId(site.getUrl()), site);
+                siteS3Name = helper.getConfig().getS3Site();
+            helper.getS3().saveJSONObject(siteS3Name, Site.generateId(site.getUrl()), site);
         }
 
         String apiUrl = "http://www.diffbot.com/api/dfs/dml/archive?output=json&token=" + token + "&id=" + site.getExternalId();
@@ -91,6 +91,8 @@ public class DiffbotSiteCrawler implements SiteCrawler {
         String apiUrl = "http://www.diffbot.com/api/article?token=" + token + "&tags=1&comments=1&summary=1&url=" + HttpHelper.encode(article.getUrl());
         String response = HttpHelper.getResponse(apiUrl);
         Article newArticle = JsonHelper.parseJson(response, Article.class);
+        if (newArticle.getText() == null || newArticle.getText().length() <= 0)
+            throw new IOException("Diffbot returned Article without content. Response was: " + response);
         newArticle.setUrl(article.getUrl());
         newArticle.setSiteId(article.getSiteId());
         return newArticle;

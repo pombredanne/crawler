@@ -18,8 +18,8 @@ public class NewSitesCrawlerTest extends AbstractAWSTest {
     @Before
     public void setUp() throws IOException {
         String modifier = "-" + random.nextLong();
-        siteS3Name = helper.getConfig().getS3BucketSite() + modifier;
-        siteSQSName = helper.getConfig().getSQSQueueSite() + modifier;
+        siteS3Name = helper.getConfig().getS3Site() + modifier;
+        siteSQSName = helper.getConfig().getSQSSite() + modifier;
         helper.getS3().createBucket(siteS3Name);
         helper.getSQS().createQueue(siteSQSName);
         crawler = new NewSitesCrawler();
@@ -33,7 +33,7 @@ public class NewSitesCrawlerTest extends AbstractAWSTest {
         List<Site> sites = JsonHelper.parseJson(ClassLoader.getSystemResource("NewSitesCrawlerTest.testCheckSites.json"), new TypeReference<List<Site>>() {
         });
         for (Site site : sites)
-            helper.getS3().saveObject(siteS3Name, Site.generateId(site.getUrl()), site);
+            helper.getS3().saveJSONObject(siteS3Name, Site.generateId(site.getUrl()), site);
 
         crawler.performWork();
 

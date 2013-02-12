@@ -2,6 +2,7 @@ package com.github.vmorev.crawler.workers;
 
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.amazonaws.services.sqs.model.Message;
 import com.github.vmorev.crawler.beans.Site;
 import com.github.vmorev.crawler.utils.AWSHelper;
 import org.slf4j.Logger;
@@ -22,10 +23,9 @@ public class NewSitesCrawler extends AbstractWorker {
         try {
             helper = new AWSHelper();
             if (!isTest) {
-                siteSQSName = helper.getConfig().getSQSQueueSite();
-                siteS3Name = helper.getConfig().getS3BucketSite();
+                siteSQSName = helper.getConfig().getSQSSite();
+                siteS3Name = helper.getConfig().getS3Site();
             }
-            //timeout 5 minutes
         } catch (Exception e) {
             String message = "FAIL. " + NewSitesCrawler.class.getSimpleName() + ". Initialization failure";
             log.error(message, e);
@@ -33,6 +33,14 @@ public class NewSitesCrawler extends AbstractWorker {
         }
 
         try {
+            int count;
+            do {
+                List<Message> messages = helper.getSQS().receiveMessage(siteSQSName).getMessages();
+                count = messages.size();
+                for (Message m : messages)
+                    helper.getSQS().deleteMessage(siteSQSName, m.getReceiptHandle());
+            } while (count > 0);
+
             List<Site> sites = getSitesToCrawl(siteS3Name);
             for (Site site : sites) {
                 helper.getSQS().sendMessage(siteSQSName, site);
@@ -48,11 +56,11 @@ public class NewSitesCrawler extends AbstractWorker {
     private List<Site> getSitesToCrawl(String bucketName) throws IOException {
         List<Site> sites = new ArrayList<>();
         //get all sites
-        //TODO think of moving to helper
+        //TODO MINOR think of moving to helper
         ObjectListing objectListing = helper.getS3().getS3().listObjects(bucketName);
         do {
             for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
-                Site site = helper.getS3().getObject(bucketName, objectSummary.getKey(), Site.class);
+                Site site = helper.getS3().getJSONObject(bucketName, objectSummary.getKey(), Site.class);
                 //check if it's time to put in queue
                 if (site != null && System.currentTimeMillis() > (site.getLastCheckDate() + site.getCheckInterval())) {
                     //site can be in queue already but we will re-check date in consumer

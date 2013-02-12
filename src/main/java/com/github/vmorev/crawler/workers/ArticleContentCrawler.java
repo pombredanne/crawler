@@ -19,9 +19,9 @@ public class ArticleContentCrawler extends AbstractWorker {
         try {
             helper = new AWSHelper();
             if (articleSQSName == null)
-                articleSQSName = helper.getConfig().getSQSQueueArticleContent();
+                articleSQSName = helper.getConfig().getSQSArticle();
             if (articleS3Name == null)
-                articleS3Name = helper.getConfig().getS3BucketArticle();
+                articleS3Name = helper.getConfig().getS3Article();
             //timeout 3 minutes
             result = helper.getSQS().receiveMessage(articleSQSName, 60 * 3);
         } catch (Exception e) {
@@ -37,18 +37,18 @@ public class ArticleContentCrawler extends AbstractWorker {
                 String key = Article.generateId(article.getSiteId(), article.getUrl());
                 //TODO MINOR put all found articles in cache and use it to check
                 //check if exist
-                if (helper.getS3().getObject(articleS3Name, key, Article.class) == null) {
+                if (helper.getS3().getJSONObject(articleS3Name, key, Article.class) == null) {
                     SiteCrawler crawler = (SiteCrawler) Class.forName(article.getArticleCrawler()).newInstance();
                     //crawl article
                     article = crawler.getArticle(article);
                     //save article
-                    helper.getS3().saveObject(articleS3Name, key, article);
+                    helper.getS3().saveJSONObject(articleS3Name, key, article);
                 }
                 log.info("SUCCESS. " + ArticleContentCrawler.class.getSimpleName() + ". ARTICLE ADDED TO S3 " + article.getUrl());
                 //remove article from queue
                 helper.getSQS().deleteMessage(articleSQSName, m.getReceiptHandle());
             } catch (Exception e) {
-                String message = "FAIL. " + ArticleContentCrawler.class.getSimpleName() + ". ARTICLE FAILED " + (article != null ? article.getUrl() : "null");
+                String message = "FAIL. " + ArticleContentCrawler.class.getSimpleName() + ". ARTICLE FAILED " + (article != null ? article.getUrl() : m.getBody());
                 log.error(message, e);
                 throw new ExecutionFailureException(message, e);
             }

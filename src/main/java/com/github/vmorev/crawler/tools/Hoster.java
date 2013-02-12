@@ -26,10 +26,12 @@ public class Hoster {
         ConfigStorage.updateLogger();
 
         helper = new AWSHelper();
-        helper.getSQS().createQueue(helper.getConfig().getSQSQueueArticleContent());
-        helper.getSQS().createQueue(helper.getConfig().getSQSQueueSite());
-        helper.getS3().createBucket(helper.getConfig().getS3BucketSite());
-        helper.getS3().createBucket(helper.getConfig().getS3BucketArticle());
+        helper.getS3().createBucket(helper.getConfig().getS3Logs());
+        helper.getS3().createBucket(helper.getConfig().getS3LogsStat());
+        helper.getS3().createBucket(helper.getConfig().getS3Site());
+        helper.getS3().createBucket(helper.getConfig().getS3Article());
+        helper.getSQS().createQueue(helper.getConfig().getSQSArticle());
+        helper.getSQS().createQueue(helper.getConfig().getSQSSite());
 
         //load config
         String hosterFileName = "hoster.json";
@@ -38,7 +40,7 @@ public class Hoster {
         HosterConfig hoster = ConfigStorage.getInstance(hosterFileName, HosterConfig.class, false);
 
         //update or add sites to s3
-        saveSites(helper.getConfig().getS3BucketSite(), hoster.getSitesFileName());
+        saveSites(helper.getConfig().getS3Site(), hoster.getSitesFileName());
 
         //finish if no workers are configured
         List<Map> workers = hoster.getWorkers();
@@ -52,11 +54,11 @@ public class Hoster {
         for (Map worker : workers)
             startWorker(worker);
 
-        //loop for log current status and wait
+        //loop for log heartbeat and wait
         while (!service.getExecutor().isTerminated()) {
             try {
                 Thread.sleep(hoster.getHosterSleepInterval());
-                logStatus();
+                logHeartBeat();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -71,8 +73,8 @@ public class Hoster {
             });
 
             for (Site site : sites) {
-                if (helper.getS3().getObject(bucketName, Site.generateId(site.getUrl()), Site.class) == null) {
-                    helper.getS3().saveObject(bucketName, Site.generateId(site.getUrl()), site);
+                if (helper.getS3().getJSONObject(bucketName, Site.generateId(site.getUrl()), Site.class) == null) {
+                    helper.getS3().saveJSONObject(bucketName, Site.generateId(site.getUrl()), site);
                     log.info("SUCCESS. " + Hoster.class.getSimpleName() + ". SITE ADDED TO S3 " + site.getUrl());
                 }
             }
@@ -102,7 +104,7 @@ public class Hoster {
         }
     }
 
-    private static void logStatus() {
+    private static void logHeartBeat() {
         log.trace("STATUS. " + Hoster.class.getSimpleName() + ". WORKING");
     }
 

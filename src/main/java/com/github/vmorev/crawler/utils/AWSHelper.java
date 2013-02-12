@@ -12,6 +12,7 @@ import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClient;
 import com.amazonaws.services.sqs.model.*;
 import com.amazonaws.util.BinaryUtils;
+import org.codehaus.jackson.type.TypeReference;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,6 +56,8 @@ public class AWSHelper {
     public class ConfigService {
         private static final String S3_ARTICLE = "s3Article";
         private static final String S3_SITE = "s3Site";
+        private static final String S3_LOGS = "s3Logs";
+        private static final String S3_LOGS_STAT = "s3LogsStat";
         private static final String SQS_SITE = "sqsSite";
         private static final String CONFIG_FILE = "aws.json";
         private static final String ACCESS_KEY = "accessKey";
@@ -75,20 +78,28 @@ public class AWSHelper {
             return configStorage.get(SECRET_KEY);
         }
 
-        public String getS3BucketArticle() {
+        public String getS3Logs() {
+            return configStorage.get(S3_LOGS);
+        }
+
+        public String getS3Article() {
             return configStorage.get(S3_ARTICLE);
         }
 
-        public String getS3BucketSite() {
+        public String getS3Site() {
             return configStorage.get(S3_SITE);
         }
 
-        public String getSQSQueueArticleContent() {
+        public String getSQSArticle() {
             return configStorage.get(SQS_ARTICLE_CONTENT);
         }
 
-        public String getSQSQueueSite() {
+        public String getSQSSite() {
             return configStorage.get(SQS_SITE);
+        }
+
+        public String getS3LogsStat() {
+            return configStorage.get(S3_LOGS_STAT);
         }
     }
 
@@ -105,6 +116,7 @@ public class AWSHelper {
         }
 
         public void createBucket(String bucket) throws IOException {
+            //TODO MINOR try to use bucket if exist to get exception if no rights
             if (!getS3().doesBucketExist(bucket))
                 getS3().createBucket(bucket);
 
@@ -121,7 +133,7 @@ public class AWSHelper {
             s3.deleteBucket(bucketName);
         }
 
-        public <T> T getObject(String bucket, String key, Class<T> clazz) {
+        public <T> T getJSONObject(String bucket, String key, Class<T> clazz) {
             T obj = null;
             try {
                 obj = JsonHelper.parseJson(getS3().getObject(bucket, key).getObjectContent(), clazz);
@@ -131,11 +143,21 @@ public class AWSHelper {
             return obj;
         }
 
-        public <T> void saveObject(String bucket, String key, T obj) throws IOException {
-            saveObject(bucket, key, obj, new ObjectMetadata());
+        public <T> T getJSONObject(String bucket, String key, TypeReference ref) {
+            T obj = null;
+            try {
+                obj = JsonHelper.parseJson(getS3().getObject(bucket, key).getObjectContent(), ref);
+            } catch (Exception e) {
+                //do nothing and return null
+            }
+            return obj;
         }
 
-        public <T> void saveObject(String bucket, String key, T obj, ObjectMetadata metadata) throws IOException {
+        public <T> void saveJSONObject(String bucket, String key, T obj) throws IOException {
+            saveJSONObject(bucket, key, obj, new ObjectMetadata());
+        }
+
+        public <T> void saveJSONObject(String bucket, String key, T obj, ObjectMetadata metadata) throws IOException {
             InputStream inStream = HttpHelper.stringToInputStream(JsonHelper.parseObject(obj));
             metadata.setContentLength(inStream.available());
             getS3().putObject(bucket, key, inStream, metadata);
@@ -159,6 +181,7 @@ public class AWSHelper {
         }
 
         public void createQueue(String queueName) {
+            //TODO MINOR try to use queue if exist to get exception if no rights
             List<String> urls = getSQS().listQueues().getQueueUrls();
             for (String url : urls)
                 if (url.equals(queueName))
@@ -199,7 +222,7 @@ public class AWSHelper {
             if (!mBody.startsWith("{")) {
                 mBody = new String(BinaryUtils.fromBase64(mBody));
             }
-            mBody = mBody.replace("\\\"", "\"");
+            //mBody = mBody.replace("\\\"", "\"");
 
             return JsonHelper.parseJson(mBody, clazz);
         }

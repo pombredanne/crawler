@@ -1,5 +1,5 @@
 @echo off
-set java_home=c:\bin\jdk7
+rem set java_home=c:\bin\jdk7
 set path=%java_home%\bin;%path%
 
 setlocal enableextensions
