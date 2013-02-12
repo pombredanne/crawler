@@ -20,7 +20,7 @@ public class DiffbotCrawlerTest extends AbstractAWSTest {
     @Before
     public void setUp() throws IOException {
         String modifier = "-" + random.nextLong();
-        siteS3Name = helper.getConfig().getS3BucketSite() + modifier;
+        siteS3Name = helper.getConfig().getS3Site() + modifier;
         helper.getS3().createBucket(siteS3Name);
     }
 
@@ -68,13 +68,13 @@ public class DiffbotCrawlerTest extends AbstractAWSTest {
     public void testExternalIdSave() throws Exception {
         String fileName = "DiffbotCrawlerTest.testExternalIdSave.json";
         Site site = JsonHelper.parseJson(ClassLoader.getSystemResource(fileName), Site.class);
-        helper.getS3().saveObject(siteS3Name, Site.generateId(site.getUrl()), site);
+        helper.getS3().saveJSONObject(siteS3Name, Site.generateId(site.getUrl()), site);
 
         DiffbotSiteCrawler crawler = new DiffbotSiteCrawler();
         crawler.siteS3Name = siteS3Name;
         crawler.getNewArticles(site);
 
-        Site siteS3 = helper.getS3().getObject(siteS3Name, Site.generateId(site.getUrl()), Site.class);
+        Site siteS3 = helper.getS3().getJSONObject(siteS3Name, Site.generateId(site.getUrl()), Site.class);
         assertEquals(site.getUrl(), siteS3.getUrl());
         assertEquals("538", siteS3.getExternalId());
     }

@@ -17,8 +17,8 @@ public class ArticleContentCrawlerTest extends AbstractAWSTest {
     @Before
     public void setUp() throws IOException {
         String modifier = "-" + random.nextLong();
-        articleSQSName = helper.getConfig().getSQSQueueArticleContent() + modifier;
-        articleS3Name = helper.getConfig().getS3BucketArticle() + modifier;
+        articleSQSName = helper.getConfig().getSQSArticle() + modifier;
+        articleS3Name = helper.getConfig().getS3Article() + modifier;
         helper.getS3().createBucket(articleS3Name);
         helper.getSQS().createQueue(articleSQSName);
         crawler = new ArticleContentCrawler();
@@ -36,7 +36,7 @@ public class ArticleContentCrawlerTest extends AbstractAWSTest {
         crawler.performWork();
 
         assertEquals(0, helper.getSQS().receiveMessage(articleSQSName).getMessages().size());
-        Article resultedArticle = helper.getS3().getObject(articleS3Name, key, Article.class);
+        Article resultedArticle = helper.getS3().getJSONObject(articleS3Name, key, Article.class);
         assertEquals(article.getSiteId(), resultedArticle.getSiteId());
         assertEquals(article.getUrl(), resultedArticle.getUrl());
         assertNotNull(resultedArticle.getText());

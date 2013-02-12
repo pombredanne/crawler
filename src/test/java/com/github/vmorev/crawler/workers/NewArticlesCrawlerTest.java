@@ -17,9 +17,9 @@ public class NewArticlesCrawlerTest extends AbstractAWSTest {
     @Before
     public void setUp() throws IOException {
         String modifier = "-" + random.nextLong();
-        siteSQSName = helper.getConfig().getSQSQueueSite() + modifier;
-        articleSQSName = helper.getConfig().getSQSQueueArticleContent() + modifier;
-        siteS3Name = helper.getConfig().getS3BucketSite() + modifier;
+        siteSQSName = helper.getConfig().getSQSSite() + modifier;
+        articleSQSName = helper.getConfig().getSQSArticle() + modifier;
+        siteS3Name = helper.getConfig().getS3Site() + modifier;
         helper.getSQS().createQueue(siteSQSName);
         helper.getSQS().createQueue(articleSQSName);
         helper.getS3().createBucket(siteS3Name);

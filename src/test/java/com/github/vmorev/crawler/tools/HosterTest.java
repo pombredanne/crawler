@@ -14,8 +14,8 @@ public class HosterTest extends AbstractAWSTest {
     @Before
     public void setUp() throws IOException {
         String modifier = "-" + random.nextLong();
-        siteS3Name = helper.getConfig().getS3BucketSite() + modifier;
-        siteSQSName = helper.getConfig().getSQSQueueSite() + modifier;
+        siteS3Name = helper.getConfig().getS3Site() + modifier;
+        siteSQSName = helper.getConfig().getSQSSite() + modifier;
         helper.getS3().createBucket(siteS3Name);
         helper.getSQS().createQueue(siteSQSName);
         Hoster.helper = helper;

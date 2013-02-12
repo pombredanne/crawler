@@ -24,9 +24,9 @@ public class NewArticlesCrawler extends AbstractWorker {
         try {
             helper = new AWSHelper();
             if (!isTest) {
-                articleSQSName = helper.getConfig().getSQSQueueArticleContent();
-                siteSQSName = helper.getConfig().getSQSQueueSite();
-                siteS3Name = helper.getConfig().getS3BucketSite();
+                articleSQSName = helper.getConfig().getSQSArticle();
+                siteSQSName = helper.getConfig().getSQSSite();
+                siteS3Name = helper.getConfig().getS3Site();
             }
             //timeout 5 minutes
             result = helper.getSQS().receiveMessage(siteSQSName, 60*5);
@@ -52,7 +52,7 @@ public class NewArticlesCrawler extends AbstractWorker {
                     }
                     //update site in s3
                     site.setLastCheckDate(System.currentTimeMillis());
-                    helper.getS3().saveObject(siteS3Name, Site.generateId(site.getUrl()), site);
+                    helper.getS3().saveJSONObject(siteS3Name, Site.generateId(site.getUrl()), site);
                     log.info("SUCCESS. " + NewArticlesCrawler.class.getSimpleName() + ". SITE UPDATED IN S3 " + site.getUrl());
                 }
                 //remove from queue
