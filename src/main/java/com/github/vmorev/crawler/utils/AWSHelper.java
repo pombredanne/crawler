@@ -8,6 +8,8 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.amazonaws.services.simpledb.AmazonSimpleDB;
+import com.amazonaws.services.simpledb.AmazonSimpleDBClient;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClient;
 import com.amazonaws.services.sqs.model.*;
@@ -27,12 +29,14 @@ public class AWSHelper {
     private AWSCredentials credentials;
     private SQSService sqs;
     private S3Service s3;
+    private SDBService sdb;
     private ConfigService config;
 
-    public AWSHelper() throws IOException {
+    public AWSHelper() {
         config = new ConfigService();
         sqs = new SQSService();
         s3 = new S3Service();
+        sdb = new SDBService();
     }
 
     private AWSCredentials getCredentials() {
@@ -53,6 +57,10 @@ public class AWSHelper {
         return config;
     }
 
+    public SDBService getSDB() {
+        return sdb;
+    }
+
     public class ConfigService {
         private static final String S3_ARTICLE = "s3Article";
         private static final String S3_SITE = "s3Site";
@@ -66,7 +74,7 @@ public class AWSHelper {
 
         private Map<String, String> configStorage;
 
-        public ConfigService() throws IOException {
+        public ConfigService() {
             configStorage = ConfigStorage.getInstance(CONFIG_FILE, Map.class, false);
         }
 
@@ -103,26 +111,35 @@ public class AWSHelper {
         }
     }
 
+    public class SDBService {
+        private AmazonSimpleDB sdb;
+
+        public AmazonSimpleDB getSDB() {
+            if (sdb == null)
+                sdb = new AmazonSimpleDBClient(getCredentials());
+            return sdb;
+        }
+    }
+
     public class S3Service {
-        public static final String S3_NAME_DELIMETER = "-";
         public static final String S3_NAME_SUFFIX = ".json";
 
         private AmazonS3 s3;
 
-        public AmazonS3 getS3() throws IOException {
+        public AmazonS3 getS3() {
             if (s3 == null)
                 s3 = new AmazonS3Client(getCredentials());
             return s3;
         }
 
-        public void createBucket(String bucket) throws IOException {
+        public void createBucket(String bucket) {
             //TODO MINOR try to use bucket if exist to get exception if no rights
             if (!getS3().doesBucketExist(bucket))
                 getS3().createBucket(bucket);
 
         }
 
-        public void deleteBucket(String bucketName) throws IOException {
+        public void deleteBucket(String bucketName) {
             AmazonS3 s3 = getS3();
             ObjectListing objectListing = s3.listObjects(bucketName);
             do {
@@ -181,7 +198,6 @@ public class AWSHelper {
         }
 
         public void createQueue(String queueName) {
-            //TODO MINOR try to use queue if exist to get exception if no rights
             List<String> urls = getSQS().listQueues().getQueueUrls();
             for (String url : urls)
                 if (url.equals(queueName))
@@ -192,7 +208,7 @@ public class AWSHelper {
             getSQS().createQueue(request);
         }
 
-        public void deleteQueue(String queueName) throws IOException {
+        public void deleteQueue(String queueName) {
             getSQS().deleteQueue(new DeleteQueueRequest(getQueueURL(queueName)));
         }
 
@@ -222,8 +238,6 @@ public class AWSHelper {
             if (!mBody.startsWith("{")) {
                 mBody = new String(BinaryUtils.fromBase64(mBody));
             }
-            //mBody = mBody.replace("\\\"", "\"");
-
             return JsonHelper.parseJson(mBody, clazz);
         }
     }

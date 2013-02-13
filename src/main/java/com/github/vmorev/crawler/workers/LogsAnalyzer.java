@@ -116,7 +116,7 @@ public class LogsAnalyzer extends AbstractWorker {
         return stat;
     }
 
-    private LogFileSummary calcStat(List<LogFileSummary> stats) throws IOException, ExecutionFailureException {
+    private LogFileSummary calcStat(List<LogFileSummary> stats) throws ExecutionFailureException {
         LogFileSummary summary = new LogFileSummary();
         for (LogFileSummary stat : stats) {
             summary.addLogFileStat(stat);
@@ -148,7 +148,7 @@ public class LogsAnalyzer extends AbstractWorker {
                 }
                 objectListing.setMarker(objectListing.getNextMarker());
             } while (objectListing.isTruncated());
-        } catch (IOException e) {
+        } catch (Exception e) {
             String message = "FAIL. " + LogsAnalyzer.class.getSimpleName() + ". LOG STAT FAILED. Can't get list of sites in S3";
             log.error(message, e);
             throw new ExecutionFailureException(message, e);

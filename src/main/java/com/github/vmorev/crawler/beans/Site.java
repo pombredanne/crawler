@@ -14,6 +14,7 @@ public class Site {
     private String newArticlesCrawler;
     private String oldArticlesCrawler;
     private long lastCheckDate;
+    private long latestArticleDate;
     private long checkInterval;
     private boolean isArchiveStored;
 
@@ -77,4 +78,11 @@ public class Site {
         this.checkInterval = checkInterval;
     }
 
+    public long getLatestArticleDate() {
+        return latestArticleDate;
+    }
+
+    public void setLatestArticleDate(long latestArticleDate) {
+        this.latestArticleDate = latestArticleDate;
+    }
 }

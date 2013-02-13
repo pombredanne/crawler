@@ -22,9 +22,8 @@ public class ConfigStorage {
      * @param configName - file to read JSON data from
      * @param clazz      - class to fill with JSON data
      * @return class with JSON data loaded
-     * @throws IOException if file operations fail
      */
-    public static <T> T getInstance(String configName, Class<T> clazz, boolean reload) throws IOException {
+    public static <T> T getInstance(String configName, Class<T> clazz, boolean reload) {
         T tmpInstance = (T) instances.get(configName);
         if (tmpInstance == null) {
             synchronized (ConfigStorage.class) {
@@ -42,12 +41,21 @@ public class ConfigStorage {
         return tmpInstance;
     }
 
-    private static <T> T load(String configName, Class<T> clazz) throws IOException {
-        return JsonHelper.parseJson(ClassLoader.getSystemResource(configName), clazz);
+    private static <T> T load(String configName, Class<T> clazz) {
+        try {
+            return JsonHelper.parseJson(ClassLoader.getSystemResource(configName), clazz);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private static <T> T loadMap(String configName, Class<T> clazz) throws IOException {
-        T config = JsonHelper.parseJson(ClassLoader.getSystemResource(configName), clazz);
+    private static <T> T loadMap(String configName, Class<T> clazz) {
+        T config;
+        try {
+            config = JsonHelper.parseJson(ClassLoader.getSystemResource(configName), clazz);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         try {
             T localConfig = JsonHelper.parseJson(ClassLoader.getSystemResource(configName.replace(".json", ".local.json")), clazz);
             ((Map) config).putAll((Map) localConfig);

@@ -20,7 +20,7 @@ public class DiffbotSiteCrawler implements SiteCrawler {
     private DiffbotHelper diffbotHelper;
     protected String siteS3Name;
 
-    public DiffbotSiteCrawler() throws IOException {
+    public DiffbotSiteCrawler() {
         this.diffbotHelper = new DiffbotHelper();
     }
 
@@ -33,6 +33,9 @@ public class DiffbotSiteCrawler implements SiteCrawler {
      */
     public List<Article> getNewArticles(Site site) throws IOException {
         String token = diffbotHelper.getToken();
+        AWSHelper helper = new AWSHelper();
+        if (siteS3Name == null)
+            siteS3Name = helper.getConfig().getS3Site();
 
         if (site.getExternalId() == null || site.getExternalId().length() <= 0) {
             String apiUrl = "http://www.diffbot.com/api/add";
@@ -40,9 +43,6 @@ public class DiffbotSiteCrawler implements SiteCrawler {
             String response = HttpHelper.postResponse(apiUrl, params);
             site.setExternalId(response.substring(response.indexOf("id=\"") + 4, response.indexOf("\">")));
 
-            AWSHelper helper = new AWSHelper();
-            if (siteS3Name == null)
-                siteS3Name = helper.getConfig().getS3Site();
             helper.getS3().saveJSONObject(siteS3Name, Site.generateId(site.getUrl()), site);
         }
 
@@ -52,6 +52,7 @@ public class DiffbotSiteCrawler implements SiteCrawler {
 
         //TODO MINOR DIFFBOT implement jackson dependant streaming api usage
         List<Article> articles = new ArrayList<>();
+        long latestArticleDate = 0;
         for (Map iterItem : ((List<Map>) ((Map) ((List) responseData.get("childNodes")).get(0)).get("childNodes"))) {
             if ("item".equals(iterItem.get("tagName"))) {
                 Article article = new Article();
@@ -63,20 +64,33 @@ public class DiffbotSiteCrawler implements SiteCrawler {
                     } else if ("textSummary".equals(props.get("tagName"))) {
                         article.setText((String) ((List) props.get("childNodes")).get(0));
                     } else if ("pubDate".equals(props.get("tagName"))) {
-                        article.setcDate((String) ((List) props.get("childNodes")).get(0));
+                        article.setDate((Long) ((List) props.get("childNodes")).get(0));
+                    } else if ("sp".equals(props.get("tagName"))) {
+                        article.setSpamScore((Double) ((List) props.get("childNodes")).get(0));
+                    } else if ("sr".equals(props.get("tagName"))) {
+                        article.setStaticRank((Double) ((List) props.get("childNodes")).get(0));
+                    } else if ("fresh".equals(props.get("tagName"))) {
+                        article.setFresh((Double) ((List) props.get("childNodes")).get(0));
                     }
                 }
                 article.setSiteId(Site.generateId(site.getUrl()));
                 article.setArticleCrawler(site.getNewArticlesCrawler());
-                if (article.getUrl() != null)
+                if (article.getUrl() != null) {
                     articles.add(article);
+                    if (article.getDate() > 0 && article.getDate() > latestArticleDate)
+                        latestArticleDate = article.getDate();
+                }
             }
+        }
+        if (latestArticleDate > 0 && latestArticleDate > site.getLatestArticleDate()) {
+            site.setLatestArticleDate(latestArticleDate);
+            helper.getS3().saveJSONObject(siteS3Name, Site.generateId(site.getUrl()), site);
         }
         return articles;
     }
 
-    public List<Article> getArchivedArticles(Site site) throws Exception {
-        throw new Exception("Not implemented");
+    public List<Article> getArchivedArticles(Site site) throws IOException {
+        throw new IOException("Not implemented");
     }
 
     /**

@@ -29,7 +29,7 @@ public class Cleaner {
         deleteAllQueues();
     }
 
-    private static void deleteAllBuckets() throws IOException {
+    private static void deleteAllBuckets() {
         for (Bucket bucket : helper.getS3().getS3().listBuckets()) {
             if (!exceptionsBuckets.contains(bucket.getName())) {
                 helper.getS3().deleteBucket(bucket.getName());

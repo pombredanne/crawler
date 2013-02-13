@@ -16,7 +16,7 @@ public class NewSitesCrawlerTest extends AbstractAWSTest {
     NewSitesCrawler crawler;
 
     @Before
-    public void setUp() throws IOException {
+    public void setUp() {
         String modifier = "-" + random.nextLong();
         siteS3Name = helper.getConfig().getS3Site() + modifier;
         siteSQSName = helper.getConfig().getSQSSite() + modifier;

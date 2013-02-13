@@ -46,14 +46,14 @@ public class NewSitesCrawler extends AbstractWorker {
                 helper.getSQS().sendMessage(siteSQSName, site);
                 log.info("SUCCESS. " + NewSitesCrawler.class.getSimpleName() + ". SITE ADDED TO SQS " + site.getUrl());
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             String message = "FAIL. " + NewSitesCrawler.class.getSimpleName() + ". SITE FAILED. Can't put new sites to SQS";
             log.error(message, e);
             throw new ExecutionFailureException(message, e);
         }
     }
 
-    private List<Site> getSitesToCrawl(String bucketName) throws IOException {
+    private List<Site> getSitesToCrawl(String bucketName) {
         List<Site> sites = new ArrayList<>();
         //get all sites
         //TODO MINOR think of moving to helper

@@ -1,8 +1,5 @@
 package com.github.vmorev.crawler.utils;
 
-import com.github.vmorev.crawler.utils.ConfigStorage;
-
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -15,7 +12,7 @@ public class DiffbotHelper {
 
     private Map<String, String> config;
 
-    public DiffbotHelper() throws IOException {
+    public DiffbotHelper() {
         config = ConfigStorage.getInstance(CONFIG_FILE, Map.class, false);
     }
 
