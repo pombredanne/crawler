@@ -30,7 +30,7 @@ public class ArticleContentCrawlerTest extends AbstractAWSTest {
     public void testArticleCrawl() throws Exception {
         String fileName = "ArticleContentCrawlerTest.testArticleCrawl.json";
         Article article = JsonHelper.parseJson(ClassLoader.getSystemResource(fileName), Article.class);
-        String key = Article.generateId(article.getSiteId(), article.getUrl());
+        String key = Article.generateId(article.getUrl());
 
         helper.getSQS().sendMessage(articleSQSName, article);
         crawler.performWork();

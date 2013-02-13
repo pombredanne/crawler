@@ -21,8 +21,8 @@ public class Article {
     //private String nextPage;
     //private String numPages;
 
-    public static String generateId(String siteId, String url) {
-        return siteId + AWSHelper.S3Service.S3_NAME_DELIMETER + HttpHelper.encode(url) + AWSHelper.S3Service.S3_NAME_SUFFIX;
+    public static String generateId(String url) {
+        return HttpHelper.encode(url.replace("://",".").replace("/",".")) + AWSHelper.S3Service.S3_NAME_SUFFIX;
     }
 
     public String getArticleCrawler() {

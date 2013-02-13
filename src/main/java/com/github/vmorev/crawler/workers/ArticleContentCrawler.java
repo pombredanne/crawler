@@ -34,7 +34,7 @@ public class ArticleContentCrawler extends AbstractWorker {
             Article article = null;
             try {
                 article = helper.getSQS().decodeMessage(m, Article.class);
-                String key = Article.generateId(article.getSiteId(), article.getUrl());
+                String key = Article.generateId(article.getUrl());
                 //TODO MINOR put all found articles in cache and use it to check
                 //check if exist
                 if (helper.getS3().getJSONObject(articleS3Name, key, Article.class) == null) {
