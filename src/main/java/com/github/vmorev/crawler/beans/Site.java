@@ -1,6 +1,5 @@
 package com.github.vmorev.crawler.beans;
 
-import com.github.vmorev.crawler.utils.AWSHelper;
 import com.github.vmorev.crawler.utils.HttpHelper;
 
 /**
@@ -8,7 +7,7 @@ import com.github.vmorev.crawler.utils.HttpHelper;
  * Date: 10.01.13
  */
 @org.codehaus.jackson.annotate.JsonIgnoreProperties(ignoreUnknown = true)
-public class Site {
+public class Site extends SDBItem {
     private String url;
     private String externalId;
     private String newArticlesCrawler;
@@ -19,7 +18,7 @@ public class Site {
     private boolean isArchiveStored;
 
     public static String generateId(String url) {
-        return HttpHelper.encode(url.replace("://",".").replace("/",".")) + AWSHelper.S3Service.S3_NAME_SUFFIX;
+        return HttpHelper.encode(url.replace("://",".").replace("/","."));
     }
 
     public String getUrl() {

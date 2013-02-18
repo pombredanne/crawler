@@ -1,12 +1,11 @@
 package com.github.vmorev.crawler.workers;
 
-import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import com.github.vmorev.amazon.log4j.support.LogCacheLine;
+import com.github.vmorev.crawler.beans.Article;
 import com.github.vmorev.crawler.beans.LogFileSummary;
 import com.github.vmorev.crawler.beans.Site;
-import com.github.vmorev.crawler.utils.AWSHelper;
-import org.codehaus.jackson.type.TypeReference;
+import com.github.vmorev.crawler.utils.amazon.S3Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,59 +15,56 @@ import java.util.List;
 
 public class LogsAnalyzer extends AbstractWorker {
     private static final Logger log = LoggerFactory.getLogger(LogsAnalyzer.class);
-    protected AWSHelper helper;
-    protected String siteSQSName;
-    protected String siteS3Name;
-    protected String articleSQSName;
-    protected String articleS3Name;
-    protected String logsS3Name;
-    protected String logsStatS3Name;
-    protected boolean isTest;
+    protected S3Service s3;
+    private S3Service.S3Bucket<Article> articleBucket;
+    private S3Service.S3Bucket<Site> siteBucket;
+    private S3Service.S3Bucket<List<LogCacheLine>> logsBucket;
+    private S3Service.S3Bucket<LogFileSummary> logsStatBucket;
 
     protected void performWork() throws InterruptedException, ExecutionFailureException {
         try {
-            helper = new AWSHelper();
-            if (!isTest) {
-                siteSQSName = helper.getConfig().getSQSSite();
-                siteS3Name = helper.getConfig().getS3Site();
-                articleSQSName = helper.getConfig().getSQSArticle();
-                articleS3Name = helper.getConfig().getS3Article();
-                logsS3Name = helper.getConfig().getS3Logs();
-                logsStatS3Name = helper.getConfig().getS3LogsStat();
-            }
+            s3 = new S3Service();
+            if (articleBucket == null)
+                articleBucket = s3.getBucket(s3.getConfig().getArticle(), Article.class);
+            if (siteBucket == null)
+                siteBucket = s3.getBucket(s3.getConfig().getSite(), Site.class);
+            if (logsBucket == null)
+                logsBucket = s3.getBucket(s3.getConfig().getLogs(), List.class);
+            if (logsStatBucket == null)
+                logsStatBucket = s3.getBucket(s3.getConfig().getLogsStat(), LogFileSummary.class);
         } catch (Exception e) {
             String message = "FAIL. " + LogsAnalyzer.class.getSimpleName() + ". Initialization failure";
             log.error(message, e);
             throw new ExecutionFailureException(message, e);
         }
 
-        List<LogFileSummary> stats = new ArrayList<>();
         try {
-            ObjectListing objectListing = helper.getS3().getS3().listObjects(logsS3Name);
-            do {
-                for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
-                    List<LogCacheLine> logEntries = helper.getS3().getJSONObject(logsS3Name, objectSummary.getKey(), new TypeReference<List<LogCacheLine>>() {
-                    });
+            final List<LogFileSummary> stats = new ArrayList<>();
+            logsBucket.listObjectSummaries(new S3Service.ListFunc<S3ObjectSummary>() {
+                public void process(S3ObjectSummary summary) {
+                    List<LogCacheLine> logEntries = logsBucket.getObject(summary.getKey());
                     LogFileSummary stat = analyzeLog(logEntries);
                     stats.add(stat);
-
-                    String key = objectSummary.getKey().replace(".json", "-stat.json");
-                    helper.getS3().saveJSONObject(logsStatS3Name, key, stat);
-                    log.info("SUCCESS. " + LogsAnalyzer.class.getSimpleName() + ". LOG STAT ADDED TO S3 " + key);
+                    String key = summary.getKey().replace(".json", "-stat.json");
+                    try {
+                        logsStatBucket.saveObject(key, stat);
+                        log.info("SUCCESS. " + LogsAnalyzer.class.getSimpleName() + ". LOG STAT ADDED TO S3 " + key);
+                    } catch (IOException e) {
+                        log.info("FAIL. " + LogsAnalyzer.class.getSimpleName() + ". LOG STAT FAILED. Can't put new stat to S3");
+                    }
                 }
-                objectListing.setMarker(objectListing.getNextMarker());
-            } while (objectListing.isTruncated());
+            });
 
             LogFileSummary summary = calcStat(stats);
             String key = LogsAnalyzer.class.getSimpleName() + "-" + System.currentTimeMillis() + ".json";
-            helper.getS3().saveJSONObject(logsStatS3Name, key, summary);
-
+            logsStatBucket.saveObject(key, summary);
             log.info("SUCCESS. " + LogsAnalyzer.class.getSimpleName() + ". LOG STAT FINISHED");
-        } catch (IOException e) {
+        } catch (Exception e) {
             String message = "FAIL. " + LogsAnalyzer.class.getSimpleName() + ". LOG STAT FAILED. Can't put new stat to S3";
             log.error(message, e);
             throw new ExecutionFailureException(message, e);
         }
+
     }
 
     private LogFileSummary analyzeLog(List<LogCacheLine> logEntries) {
@@ -116,7 +112,7 @@ public class LogsAnalyzer extends AbstractWorker {
         return stat;
     }
 
-    private LogFileSummary calcStat(List<LogFileSummary> stats) throws ExecutionFailureException {
+    private LogFileSummary calcStat(List<LogFileSummary> stats) throws Exception {
         LogFileSummary summary = new LogFileSummary();
         for (LogFileSummary stat : stats) {
             summary.addLogFileStat(stat);
@@ -133,26 +129,14 @@ public class LogsAnalyzer extends AbstractWorker {
         return summary;
     }
 
-    private List<String> getNewSites() throws ExecutionFailureException {
-        List<String> sites = new ArrayList<>();
-        try {
-            ObjectListing objectListing = helper.getS3().getS3().listObjects(siteS3Name);
-            do {
-                for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
-                    List<Site> allSites = helper.getS3().getJSONObject(siteS3Name, objectSummary.getKey(), new TypeReference<List<Site>>() {
-                    });
-
-                    for (Site site : allSites)
-                        if (site.getLastCheckDate() <= 0 || site.getExternalId() == null || site.getExternalId().length() == 0)
-                            sites.add(site.getUrl());
-                }
-                objectListing.setMarker(objectListing.getNextMarker());
-            } while (objectListing.isTruncated());
-        } catch (Exception e) {
-            String message = "FAIL. " + LogsAnalyzer.class.getSimpleName() + ". LOG STAT FAILED. Can't get list of sites in S3";
-            log.error(message, e);
-            throw new ExecutionFailureException(message, e);
-        }
+    private List<String> getNewSites() throws Exception {
+        final List<String> sites = new ArrayList<>();
+        siteBucket.listObjects(new S3Service.ListFunc<Site>() {
+            public void process(Site site) {
+                if (site.getLastCheckDate() <= 0 || site.getExternalId() == null || site.getExternalId().length() == 0)
+                    sites.add(site.getUrl());
+            }
+        });
         return sites;
     }
 }

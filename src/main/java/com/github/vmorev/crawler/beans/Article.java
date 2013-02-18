@@ -1,8 +1,6 @@
 package com.github.vmorev.crawler.beans;
 
-import com.github.vmorev.crawler.utils.AWSHelper;
 import com.github.vmorev.crawler.utils.HttpHelper;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import java.util.List;
@@ -13,10 +11,8 @@ import java.util.Map;
  * Date: 10.01.13
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Article {
-    @JsonIgnore
+public class Article extends SDBItem {
     private String text;
-
     private String url;
     private String title;
     private long date;
@@ -25,14 +21,14 @@ public class Article {
     private String articleCrawler;
     private List<String> tags;
     private String summary;
-    private List<Map> media;
+//    private List<Map> media;
     private String xpath;
     private double spamScore;
     private double staticRank;
     private double fresh;
 
     public static String generateId(String url) {
-        return HttpHelper.encode(url.replace("://",".").replace("/",".")) + AWSHelper.S3Service.S3_NAME_SUFFIX;
+        return HttpHelper.encode(url.replace("://",".").replace("/","."));
     }
 
     public String getArticleCrawler() {
@@ -105,14 +101,6 @@ public class Article {
 
     public void setSummary(String summary) {
         this.summary = summary;
-    }
-
-    public List<Map> getMedia() {
-        return media;
-    }
-
-    public void setMedia(List<Map> media) {
-        this.media = media;
     }
 
     public String getXpath() {

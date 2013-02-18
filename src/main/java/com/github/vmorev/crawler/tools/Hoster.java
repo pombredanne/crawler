@@ -1,11 +1,14 @@
 package com.github.vmorev.crawler.tools;
 
 import com.github.vmorev.crawler.beans.HosterConfig;
+import com.github.vmorev.crawler.beans.SDBItem;
 import com.github.vmorev.crawler.beans.Site;
-import com.github.vmorev.crawler.utils.AWSHelper;
 import com.github.vmorev.crawler.utils.ConfigStorage;
 import com.github.vmorev.crawler.utils.HttpHelper;
 import com.github.vmorev.crawler.utils.JsonHelper;
+import com.github.vmorev.crawler.utils.amazon.S3Service;
+import com.github.vmorev.crawler.utils.amazon.SDBService;
+import com.github.vmorev.crawler.utils.amazon.SQSService;
 import com.github.vmorev.crawler.workers.AbstractWorker;
 import com.github.vmorev.crawler.workers.WorkerService;
 import org.codehaus.jackson.type.TypeReference;
@@ -19,19 +22,13 @@ import java.util.Map;
 public class Hoster {
     private static WorkerService service;
     private static final Logger log = LoggerFactory.getLogger(Hoster.class);
-    protected static AWSHelper helper;
+    protected static SDBService.Domain<Site> siteDomain;
 
     public static void main(String[] args) throws Exception {
         //update logger with local config if present
         ConfigStorage.updateLogger();
 
-        helper = new AWSHelper();
-        helper.getS3().createBucket(helper.getConfig().getS3Logs());
-        helper.getS3().createBucket(helper.getConfig().getS3LogsStat());
-        helper.getS3().createBucket(helper.getConfig().getS3Site());
-        helper.getS3().createBucket(helper.getConfig().getS3Article());
-        helper.getSQS().createQueue(helper.getConfig().getSQSArticle());
-        helper.getSQS().createQueue(helper.getConfig().getSQSSite());
+        initAmazon();
 
         //load config
         String hosterFileName = "hoster.json";
@@ -39,8 +36,8 @@ public class Hoster {
             hosterFileName = args[0];
         HosterConfig hoster = ConfigStorage.getInstance(hosterFileName, HosterConfig.class, false);
 
-        //update or add sites to s3
-        saveSites(helper.getConfig().getS3Site(), hoster.getSitesFileName());
+        //update or add sites to sdb
+        saveSites(hoster.getSitesFileName());
 
         //finish if no workers are configured
         List<Map> workers = hoster.getWorkers();
@@ -65,21 +62,42 @@ public class Hoster {
         }
     }
 
-    protected static void saveSites(String bucketName, String sitesFileName) {
+    private static void initAmazon() throws Exception {
+        S3Service s3 = new S3Service();
+
+        s3.getBucket(s3.getConfig().getLogs(), Object.class).createBucket();
+        s3.getBucket(s3.getConfig().getLogsStat(), Object.class).createBucket();
+        s3.getBucket(s3.getConfig().getSite(), Object.class).createBucket();
+        s3.getBucket(s3.getConfig().getArticle(), Object.class).createBucket();
+
+        SQSService sqs = new SQSService();
+        sqs.getQueue(sqs.getConfig().getArticle(), Object.class).createQueue();
+        sqs.getQueue(sqs.getConfig().getSite(), Object.class).createQueue();
+
+        SDBService sdb = new SDBService();
+        sdb.getDomain(sdb.getConfig().getSite(), SDBItem.class).createDomain();
+        sdb.getDomain(sdb.getConfig().getArticle(), SDBItem.class).createDomain();
+    }
+
+    protected static void saveSites(String sitesFileName) {
         if (!(sitesFileName != null && sitesFileName.length() > 0))
             return;
+
         try {
             List<Site> sites = JsonHelper.parseJson(HttpHelper.inputStreamToString(ClassLoader.getSystemResource(sitesFileName).openStream(), "UTF8"), new TypeReference<List<Site>>() {
             });
 
+            SDBService sdb = new SDBService();
+            if (siteDomain == null)
+                sdb.getDomain(sdb.getConfig().getSite(), Site.class);
+
             for (Site site : sites) {
-                if (helper.getS3().getJSONObject(bucketName, Site.generateId(site.getUrl()), Site.class) == null) {
-                    helper.getS3().saveJSONObject(bucketName, Site.generateId(site.getUrl()), site);
-                    log.info("SUCCESS. " + Hoster.class.getSimpleName() + ". SITE ADDED TO S3 " + site.getUrl());
-                }
+                //TODO do not rewrite if exist
+                siteDomain.saveObject(Site.generateId(site.getUrl()), site);
+                log.info("SUCCESS. " + Hoster.class.getSimpleName() + ". SITE ADDED TO SDB " + site.getUrl());
             }
         } catch (IOException e) {
-            log.error("FAIL. " + Hoster.class.getSimpleName() + ". SITE FAILED. Can't put new sites to S3", e);
+            log.error("FAIL. " + Hoster.class.getSimpleName() + ". SITE FAILED. Can't put new sites to SDB", e);
         }
     }
 

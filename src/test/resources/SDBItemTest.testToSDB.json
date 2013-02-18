@@ -1,0 +1,15 @@
+{
+    "text" : "testtext",
+    "url" : "testurl",
+    "title" : "testtitle",
+    "date" : 123123123,
+    "author" : "testauthor",
+    "siteId" : "testsiteId",
+    "articleCrawler" : "testarticleCrawler",
+    "summary" : "testsummary",
+    "xpath" : "testxpath",
+    "spamScore" : 123,
+    "staticRank" : 123,
+    "fresh" : 123,
+    "tags" : ["testtag1","testtag2"]
+}

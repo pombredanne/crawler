@@ -3,7 +3,6 @@ package com.github.vmorev.crawler.sitecrawler;
 import com.github.vmorev.crawler.beans.Article;
 import com.github.vmorev.crawler.beans.Site;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
