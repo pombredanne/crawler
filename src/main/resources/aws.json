@@ -9,5 +9,5 @@
     "site.sqs" : "crawler-sites",
     "site.sdb" : "crawler-sites",
     "log.s3" : "crawler-logs",
-    "logsStat.s3" : "crawler-logs-stat"
+    "logStat.s3" : "crawler-logs-stat"
 }
