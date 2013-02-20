@@ -2,11 +2,12 @@
     "accessKey" : "",
     "secretKey" : "",
 
-    "s3Article" : "crawler-articles",
-    "s3Site" : "crawler-sites",
-    "s3Logs" : "crawler-logs",
-    "s3LogsStat" : "crawler-logs-stat",
-
-    "sqsArticleContent" : "crawler-articles-content",
-    "sqsSite" : "crawler-sites"
+    "article.s3" : "crawler-articles",
+    "article.sqs" : "crawler-articles",
+    "article.sdb" : "crawler-articles",
+    "site.s3" : "crawler-sites",
+    "site.sqs" : "crawler-sites",
+    "site.sdb" : "crawler-sites",
+    "log.s3" : "crawler-logs",
+    "logsStat.s3" : "crawler-logs-stat"
 }

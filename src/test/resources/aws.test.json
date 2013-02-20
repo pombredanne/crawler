@@ -1,7 +1,10 @@
 {
-    "s3Article" : "test-crawler-articles",
-    "s3Site" : "test-crawler-sites",
-
-    "sqsArticleContent" : "test-crawler-articles-content",
-    "sqsSite" : "test-crawler-sites"
+    "article.s3" : "test-crawler-articles",
+    "article.sqs" : "test-crawler-articles",
+    "article.sdb" : "test-crawler-articles",
+    "site.s3" : "test-crawler-sites",
+    "site.sqs" : "test-crawler-sites",
+    "site.sdb" : "test-crawler-sites",
+    "log.s3" : "test-crawler-logs",
+    "logsStat.s3" : "test-crawler-logs-stat"
 }

@@ -1,5 +1,7 @@
 target/
 .idea/
-crawler.iml
+*.iml
 *.local.json
 *.local.properties
+*.test.json
+*.test.properties
