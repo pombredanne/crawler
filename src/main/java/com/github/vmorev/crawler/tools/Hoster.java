@@ -35,7 +35,7 @@ public class Hoster {
         String hosterFileName = "hoster.json";
         if (args.length > 0 && args[0] != null && args[0].length() > 0)
             hosterFileName = args[0];
-        HosterConfig hoster = ConfigStorage.loadObject(hosterFileName, HosterConfig.class, false);
+        HosterConfig hoster = ConfigStorage.loadObject(hosterFileName, HosterConfig.class, true);
 
         //update or add sites to sdb
         saveSites(hoster.getSitesFileName());
