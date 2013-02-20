@@ -1,28 +1,50 @@
 package com.github.vmorev.crawler.beans;
 
-import com.github.vmorev.crawler.utils.AWSHelper;
 import com.github.vmorev.crawler.utils.HttpHelper;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+import java.util.List;
 
 /**
  * User: Valentin_Morev
  * Date: 10.01.13
  */
-@org.codehaus.jackson.annotate.JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Article {
-    private String url;
+    public static final String VAR_S3_BUCKET = "article.s3";
+    public static final String VAR_SQS_QUEUE = "article.sqs";
+    public static final String VAR_SDB_DOMAIN = "article.sdb";
+
     private String text;
+    private String url;
     private String title;
-    private String cDate;
+    private String date;
     private String author;
     private String siteId;
     private String articleCrawler;
+    private List<String> tags;
+    private String summary;
+    private List<ArticleMedia> media;
+    private String xpath;
+    private double spamScore;
+    private double staticRank;
+    private double fresh;
+    private long generatedDate;
 
-    //TODO MINOR DIFFBOT check if next page param is required
-    //private String nextPage;
-    //private String numPages;
+    public static String generateId(String url) {
+        return HttpHelper.encode(url.replace("://",".").replace("/","."));
+    }
 
-    public static String generateId(String siteId, String url) {
-        return siteId + AWSHelper.S3Service.S3_NAME_DELIMETER + HttpHelper.encode(url) + AWSHelper.S3Service.S3_NAME_SUFFIX;
+    public Article() {
+        this.generatedDate = System.currentTimeMillis();
+    }
+
+    public long getGeneratedDate() {
+        return generatedDate;
+    }
+
+    public void setGeneratedDate(long generatedDate) {
+        this.generatedDate = generatedDate;
     }
 
     public String getArticleCrawler() {
@@ -49,12 +71,12 @@ public class Article {
         this.title = title;
     }
 
-    public String getcDate() {
-        return cDate;
+    public String getDate() {
+        return date;
     }
 
-    public void setcDate(String cDate) {
-        this.cDate = cDate;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getAuthor() {
@@ -79,5 +101,61 @@ public class Article {
 
     public void setSiteId(String siteId) {
         this.siteId = siteId;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public String getXpath() {
+        return xpath;
+    }
+
+    public void setXpath(String xpath) {
+        this.xpath = xpath;
+    }
+
+    public double getSpamScore() {
+        return spamScore;
+    }
+
+    public void setSpamScore(double spamScore) {
+        this.spamScore = spamScore;
+    }
+
+    public double getStaticRank() {
+        return staticRank;
+    }
+
+    public void setStaticRank(double staticRank) {
+        this.staticRank = staticRank;
+    }
+
+    public double getFresh() {
+        return fresh;
+    }
+
+    public void setFresh(double fresh) {
+        this.fresh = fresh;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    public List<ArticleMedia> getMedia() {
+        return media;
+    }
+
+    public void setMedia(List<ArticleMedia> media) {
+        this.media = media;
     }
 }

@@ -11,6 +11,9 @@ import java.util.List;
  */
 @org.codehaus.jackson.annotate.JsonIgnoreProperties(ignoreUnknown = true)
 public class LogFileSummary {
+    public static final String VAR_S3_BUCKET = "logStat.s3";
+    public static final String VAR_LOG_S3_BUCKET = "log.s3";
+
     private long generationTime;
     private long startTime;
     private long endTime;

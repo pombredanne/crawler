@@ -1,11 +1,12 @@
 package com.github.vmorev.crawler.workers;
 
-import com.amazonaws.services.sqs.model.Message;
-import com.amazonaws.services.sqs.model.ReceiveMessageResult;
+import com.github.vmorev.amazon.AmazonService;
+import com.github.vmorev.amazon.SDBDomain;
+import com.github.vmorev.amazon.SQSQueue;
 import com.github.vmorev.crawler.beans.Article;
 import com.github.vmorev.crawler.beans.Site;
+import com.github.vmorev.crawler.sitecrawler.DiffbotSiteCrawler;
 import com.github.vmorev.crawler.sitecrawler.SiteCrawler;
-import com.github.vmorev.crawler.utils.AWSHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,55 +14,55 @@ import java.util.List;
 
 public class NewArticlesCrawler extends AbstractWorker {
     private static final Logger log = LoggerFactory.getLogger(NewArticlesCrawler.class);
-    protected String articleSQSName;
-    protected String siteSQSName;
-    protected String siteS3Name;
-    protected boolean isTest;
+    protected SQSQueue articleQueue;
+    protected SQSQueue siteQueue;
+    protected SDBDomain siteDomain;
+    protected boolean isTest = false;
 
     protected void performWork() throws InterruptedException, ExecutionFailureException {
-        AWSHelper helper;
-        ReceiveMessageResult result;
         try {
-            helper = new AWSHelper();
-            if (!isTest) {
-                articleSQSName = helper.getConfig().getSQSArticle();
-                siteSQSName = helper.getConfig().getSQSSite();
-                siteS3Name = helper.getConfig().getS3Site();
-            }
+            if (articleQueue == null)
+                articleQueue = new SQSQueue(SQSQueue.getConfig().getValue(Article.VAR_SQS_QUEUE));
+            if (siteQueue == null)
+                siteQueue = new SQSQueue(SQSQueue.getConfig().getValue(Site.VAR_SQS_QUEUE));
+            if (siteDomain == null)
+                siteDomain = new SDBDomain(SDBDomain.getConfig().getValue(Site.VAR_SDB_DOMAIN));
+
             //timeout 5 minutes
-            result = helper.getSQS().receiveMessage(siteSQSName, 60*5);
+            siteQueue.receiveMessages(60*5, 1, Site.class, new AmazonService.ListFunc<Site>() {
+                public void process(Site site) throws Exception {
+                    try {
+                        if (System.currentTimeMillis() > (site.getLastCheckDate() + site.getCheckInterval())) {
+                            //load articles
+                            SiteCrawler crawler = (SiteCrawler) Class.forName(site.getNewArticlesCrawler()).newInstance();
+                            List<Article> articles = crawler.getNewArticles(site);
+
+                            for (Article article : articles) {
+                                //TODO MINOR sqsClient.sendMessageBatch()
+                                articleQueue.sendMessage(article);
+                                log.info("SUCCESS. " + NewArticlesCrawler.class.getSimpleName() + ". ARTICLE ADDED TO SQS " + article.getUrl());
+                                if (isTest) break;
+                            }
+
+                            //update site in s3
+                            if (crawler instanceof DiffbotSiteCrawler)
+                                site.setExternalId(((DiffbotSiteCrawler) crawler).getExternalId());
+                            site.setLastCheckDate(System.currentTimeMillis());
+
+                            siteDomain.saveObject(Site.generateId(site.getUrl()), site);
+                            log.info("SUCCESS. " + NewArticlesCrawler.class.getSimpleName() + ". SITE UPDATED IN S3 " + site.getUrl());
+                        }
+                    } catch (Exception e) {
+                        String message = "FAIL. " + NewArticlesCrawler.class.getSimpleName() + ". SITE FAILED " + (site != null ? site.getUrl() : "null");
+                        log.error(message, e);
+                        throw new ExecutionFailureException(message, e);
+                    }
+                }
+            });
         } catch (Exception e) {
             String message = "FAIL. " + NewArticlesCrawler.class.getSimpleName() + ". Initialization failure";
             log.error(message, e);
             throw new ExecutionFailureException(message, e);
-        }
-
-        for (Message m : result.getMessages()) {
-            Site site = null;
-            try {
-                site = helper.getSQS().decodeMessage(m, Site.class);
-                if (System.currentTimeMillis() > (site.getLastCheckDate() + site.getCheckInterval())) {
-                    //load articles
-                    SiteCrawler crawler = (SiteCrawler) Class.forName(site.getNewArticlesCrawler()).newInstance();
-                    List<Article> articles = crawler.getNewArticles(site);
-                    for (Article article : articles) {
-                        //TODO MINOR sqsClient.sendMessageBatch()
-                        helper.getSQS().sendMessage(articleSQSName, article);
-                        log.info("SUCCESS. " + NewArticlesCrawler.class.getSimpleName() + ". ARTICLE ADDED TO SQS " + article.getUrl());
-                        if (isTest) break;
-                    }
-                    //update site in s3
-                    site.setLastCheckDate(System.currentTimeMillis());
-                    helper.getS3().saveJSONObject(siteS3Name, Site.generateId(site.getUrl()), site);
-                    log.info("SUCCESS. " + NewArticlesCrawler.class.getSimpleName() + ". SITE UPDATED IN S3 " + site.getUrl());
-                }
-                //remove from queue
-                helper.getSQS().deleteMessage(siteSQSName, m.getReceiptHandle());
-            } catch (Exception e) {
-                String message = "FAIL. " + NewArticlesCrawler.class.getSimpleName() + ". SITE FAILED " + (site != null ? site.getUrl() : "null");
-                log.error(message, e);
-                throw new ExecutionFailureException(message, e);
-            }
         }
     }
 

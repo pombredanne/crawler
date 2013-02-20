@@ -1,6 +1,5 @@
 package com.github.vmorev.crawler.beans;
 
-import com.github.vmorev.crawler.utils.AWSHelper;
 import com.github.vmorev.crawler.utils.HttpHelper;
 
 /**
@@ -9,16 +8,20 @@ import com.github.vmorev.crawler.utils.HttpHelper;
  */
 @org.codehaus.jackson.annotate.JsonIgnoreProperties(ignoreUnknown = true)
 public class Site {
+    public static final String VAR_S3_BUCKET = "site.s3";
+    public static final String VAR_SQS_QUEUE = "site.sqs";
+    public static final String VAR_SDB_DOMAIN = "site.sdb";
+
     private String url;
     private String externalId;
     private String newArticlesCrawler;
     private String oldArticlesCrawler;
     private long lastCheckDate;
     private long checkInterval;
-    private boolean isArchiveStored;
+    private boolean archiveStored;
 
     public static String generateId(String url) {
-        return HttpHelper.encode(url) + AWSHelper.S3Service.S3_NAME_SUFFIX;
+        return HttpHelper.encode(url.replace("://",".").replace("/","."));
     }
 
     public String getUrl() {
@@ -45,12 +48,12 @@ public class Site {
         this.externalId = externalId;
     }
 
-    public boolean isArchiveStored() {
-        return isArchiveStored;
+    public boolean getArchiveStored() {
+        return archiveStored;
     }
 
     public void setArchiveStored(boolean archiveStored) {
-        isArchiveStored = archiveStored;
+        this.archiveStored = archiveStored;
     }
 
     public String getNewArticlesCrawler() {

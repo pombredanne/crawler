@@ -3,11 +3,11 @@ Site crawler application
 
 This application can be used to crawl sites with articles and to add some processing for each article. 
 You need to maintain the list of sites, all the other things will be done automatically.
-Application built using [aws-java-sdk](http://aws.amazon.com/sdkforjava/), custom [amazon-logger](https://github.com/vmorev/amazon-logger) and custom diffbot java client
+Application built using [aws-java-sdk](http://aws.amazon.com/sdkforjava/) wrapped with custom [amazon-common](https://github.com/vmorev/amazon-common), custom [amazon-logger](https://github.com/vmorev/amazon-logger) and custom diffbot java client
 
 Code is available under Apache 2.0 license.
 
-Prerequirements are to have:
+Pre-requirements are to have:
 - [DiffBot](http://www.diffbot.com/) account
 - [Amazon AWS](http://aws.amazon.com) account
 
@@ -17,12 +17,13 @@ Compilation can be done with maven by calling:
 maven clean install
 ```
 
-You will need to do some configuration for tests to pass othervise you could just turn off tests:
+You will need to do some configuration for tests to pass otherwise you could just turn off tests:
 ```bash
 mvn clean install -Dmaven.test.skip=true
-```
+```f
 
 The configuration required is about to put your credentials into config files:
+
 
 ###src/main/resources/aws.json
 ```
@@ -32,12 +33,14 @@ The configuration required is about to put your credentials into config files:
 ...
 }
 ```
+
 ###src/main/resources/diffbot.local.json
 ```
 {
     "token" : "YOUR_TOKEN"
 }
 ```
+
 ###src/main/resources/log4j.local.properties
 ```
 ...
@@ -47,8 +50,3 @@ log4j.appender.s3logger.secretKey=YOUR_SECRET_KEY
 log4j.appender.s3logger.s3logBucket=LOGS_BUCKET
 log4j.appender.s3logger.batchSize=BATCH_SIZE
 ```
-
-##TODO list:
-- [] small memory leak detected
-- [] texts should be encoded before parsing to JSON
-- [] statistic module should be created
