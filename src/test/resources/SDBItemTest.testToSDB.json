@@ -2,7 +2,7 @@
     "text" : "testtext",
     "url" : "testurl",
     "title" : "testtitle",
-    "date" : 123123123,
+    "date" : "123123123",
     "author" : "testauthor",
     "siteId" : "testsiteId",
     "articleCrawler" : "testarticleCrawler",
@@ -11,5 +11,11 @@
     "spamScore" : 123,
     "staticRank" : 123,
     "fresh" : 123,
-    "tags" : ["testtag1","testtag2"]
+    "tags" : ["tag1","tag2"],
+    "media" : [
+        {"type": "image", "primary": true, "link": "http://s3.amazonaws.com/foofoo_large.png"},
+        {"type": "image", "link": "http://s3.amazonaws.com/field_mouse_1.png"},
+        {"type": "video", "link": "http://youtube.com/watch/foofoofail"}
+    ],
+    "generatedDate" : 123123123
 }

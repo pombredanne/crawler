@@ -4,31 +4,47 @@ import com.github.vmorev.crawler.utils.HttpHelper;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: Valentin_Morev
  * Date: 10.01.13
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Article extends SDBItem {
+public class Article {
+    public static final String VAR_S3_BUCKET = "article.s3";
+    public static final String VAR_SQS_QUEUE = "article.sqs";
+    public static final String VAR_SDB_DOMAIN = "article.sdb";
+
     private String text;
     private String url;
     private String title;
-    private long date;
+    private String date;
     private String author;
     private String siteId;
     private String articleCrawler;
     private List<String> tags;
     private String summary;
-//    private List<Map> media;
+    private List<ArticleMedia> media;
     private String xpath;
     private double spamScore;
     private double staticRank;
     private double fresh;
+    private long generatedDate;
 
     public static String generateId(String url) {
         return HttpHelper.encode(url.replace("://",".").replace("/","."));
+    }
+
+    public Article() {
+        this.generatedDate = System.currentTimeMillis();
+    }
+
+    public long getGeneratedDate() {
+        return generatedDate;
+    }
+
+    public void setGeneratedDate(long generatedDate) {
+        this.generatedDate = generatedDate;
     }
 
     public String getArticleCrawler() {
@@ -55,11 +71,11 @@ public class Article extends SDBItem {
         this.title = title;
     }
 
-    public long getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(long date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -85,14 +101,6 @@ public class Article extends SDBItem {
 
     public void setSiteId(String siteId) {
         this.siteId = siteId;
-    }
-
-    public List<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<String> tags) {
-        this.tags = tags;
     }
 
     public String getSummary() {
@@ -133,5 +141,21 @@ public class Article extends SDBItem {
 
     public void setFresh(double fresh) {
         this.fresh = fresh;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    public List<ArticleMedia> getMedia() {
+        return media;
+    }
+
+    public void setMedia(List<ArticleMedia> media) {
+        this.media = media;
     }
 }

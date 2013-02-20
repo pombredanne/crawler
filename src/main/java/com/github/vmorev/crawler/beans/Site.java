@@ -7,15 +7,18 @@ import com.github.vmorev.crawler.utils.HttpHelper;
  * Date: 10.01.13
  */
 @org.codehaus.jackson.annotate.JsonIgnoreProperties(ignoreUnknown = true)
-public class Site extends SDBItem {
+public class Site {
+    public static final String VAR_S3_BUCKET = "site.s3";
+    public static final String VAR_SQS_QUEUE = "site.sqs";
+    public static final String VAR_SDB_DOMAIN = "site.sdb";
+
     private String url;
     private String externalId;
     private String newArticlesCrawler;
     private String oldArticlesCrawler;
     private long lastCheckDate;
-    private long latestArticleDate;
     private long checkInterval;
-    private boolean isArchiveStored;
+    private boolean archiveStored;
 
     public static String generateId(String url) {
         return HttpHelper.encode(url.replace("://",".").replace("/","."));
@@ -45,12 +48,12 @@ public class Site extends SDBItem {
         this.externalId = externalId;
     }
 
-    public boolean isArchiveStored() {
-        return isArchiveStored;
+    public boolean getArchiveStored() {
+        return archiveStored;
     }
 
     public void setArchiveStored(boolean archiveStored) {
-        isArchiveStored = archiveStored;
+        this.archiveStored = archiveStored;
     }
 
     public String getNewArticlesCrawler() {
@@ -77,11 +80,4 @@ public class Site extends SDBItem {
         this.checkInterval = checkInterval;
     }
 
-    public long getLatestArticleDate() {
-        return latestArticleDate;
-    }
-
-    public void setLatestArticleDate(long latestArticleDate) {
-        this.latestArticleDate = latestArticleDate;
-    }
 }

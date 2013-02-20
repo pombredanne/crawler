@@ -1,9 +1,9 @@
 package com.github.vmorev.crawler.workers;
 
+import com.github.vmorev.amazon.AmazonService;
+import com.github.vmorev.amazon.SDBDomain;
+import com.github.vmorev.amazon.SQSQueue;
 import com.github.vmorev.crawler.beans.Site;
-import com.github.vmorev.crawler.utils.amazon.AmazonService;
-import com.github.vmorev.crawler.utils.amazon.SDBService;
-import com.github.vmorev.crawler.utils.amazon.SQSService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,25 +12,22 @@ import java.util.List;
 
 public class NewSitesCrawler extends AbstractWorker {
     private static final Logger log = LoggerFactory.getLogger(NewSitesCrawler.class);
-    protected SQSService.Queue<Site> siteQueue;
-    protected SDBService.Domain<Site> siteDomain;
+    protected SQSQueue siteQueue;
+    protected SDBDomain siteDomain;
 
     protected void performWork() throws InterruptedException, ExecutionFailureException {
         try {
-            SQSService sqs = new SQSService();
-            SDBService sdb = new SDBService();
-
             if (siteQueue == null)
-                siteQueue = sqs.getQueue(sqs.getConfig().getSite(), Site.class);
+                siteQueue = new SQSQueue(SQSQueue.getConfig().getValue(Site.VAR_SQS_QUEUE));
             if (siteDomain == null) {
-                siteDomain = sdb.getDomain(sdb.getConfig().getSite(), Site.class);
+                siteDomain = new SDBDomain(SDBDomain.getConfig().getValue(Site.VAR_SDB_DOMAIN));
             }
 
-            siteQueue.receiveMessages(new AmazonService.ListFunc<Site>() {
+            siteQueue.receiveMessages(1, 10, Site.class, new AmazonService.ListFunc<Site>() {
                 public void process(Site obj) throws Exception {
                     //do nothing, message will be deleted
                 }
-            }, 1, 1000);
+            });
 
             List<Site> sites = getSitesToCrawl();
             for (Site site : sites) {
@@ -53,7 +50,7 @@ public class NewSitesCrawler extends AbstractWorker {
     private List<Site> getSitesToCrawl() throws Exception {
         final List<Site> sites = new ArrayList<>();
         //get all sites
-        siteDomain.listObjects("select * from " + siteDomain.getName(), new SDBService.ListFunc<Site>() {
+        siteDomain.listObjects("select * from `" + siteDomain.getName() + "`", Site.class, new SDBDomain.ListFunc<Site>() {
             public void process(Site site) {
                 sites.add(site);
             }

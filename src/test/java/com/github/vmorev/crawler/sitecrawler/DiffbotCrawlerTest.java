@@ -2,17 +2,11 @@ package com.github.vmorev.crawler.sitecrawler;
 
 import com.github.vmorev.crawler.beans.Article;
 import com.github.vmorev.crawler.beans.Site;
-import com.github.vmorev.crawler.utils.JsonHelper;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import static org.junit.Assert.*;
 
@@ -65,7 +59,7 @@ public class DiffbotCrawlerTest {
     @Test
     public void testExternalIdSave() throws Exception {
         String fileName = "DiffbotCrawlerTest.testExternalIdSave.json";
-        Site site = JsonHelper.parseJson(ClassLoader.getSystemResource(fileName), Site.class);
+        Site site = new ObjectMapper().readValue(ClassLoader.getSystemResource(fileName), Site.class);
 
         DiffbotSiteCrawler crawler = new DiffbotSiteCrawler();
         crawler.getNewArticles(site);

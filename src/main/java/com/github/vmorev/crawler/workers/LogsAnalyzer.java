@@ -1,11 +1,11 @@
 package com.github.vmorev.crawler.workers;
 
 import com.amazonaws.services.s3.model.S3ObjectSummary;
+import com.github.vmorev.amazon.S3Bucket;
 import com.github.vmorev.amazon.log4j.support.LogCacheLine;
 import com.github.vmorev.crawler.beans.Article;
 import com.github.vmorev.crawler.beans.LogFileSummary;
 import com.github.vmorev.crawler.beans.Site;
-import com.github.vmorev.crawler.utils.amazon.S3Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,23 +15,21 @@ import java.util.List;
 
 public class LogsAnalyzer extends AbstractWorker {
     private static final Logger log = LoggerFactory.getLogger(LogsAnalyzer.class);
-    protected S3Service s3;
-    private S3Service.S3Bucket<Article> articleBucket;
-    private S3Service.S3Bucket<Site> siteBucket;
-    private S3Service.S3Bucket<List<LogCacheLine>> logsBucket;
-    private S3Service.S3Bucket<LogFileSummary> logsStatBucket;
+    private S3Bucket articleBucket;
+    private S3Bucket siteBucket;
+    private S3Bucket logsBucket;
+    private S3Bucket logsStatBucket;
 
     protected void performWork() throws InterruptedException, ExecutionFailureException {
         try {
-            s3 = new S3Service();
             if (articleBucket == null)
-                articleBucket = s3.getBucket(s3.getConfig().getArticle(), Article.class);
+                articleBucket = new S3Bucket(S3Bucket.getConfig().getValue(Article.VAR_S3_BUCKET));
             if (siteBucket == null)
-                siteBucket = s3.getBucket(s3.getConfig().getSite(), Site.class);
+                siteBucket = new S3Bucket(S3Bucket.getConfig().getValue(Site.VAR_S3_BUCKET));
             if (logsBucket == null)
-                logsBucket = s3.getBucket(s3.getConfig().getLogs(), List.class);
+                logsBucket = new S3Bucket(S3Bucket.getConfig().getValue(LogFileSummary.VAR_LOG_S3_BUCKET));
             if (logsStatBucket == null)
-                logsStatBucket = s3.getBucket(s3.getConfig().getLogsStat(), LogFileSummary.class);
+                logsStatBucket = new S3Bucket(S3Bucket.getConfig().getValue(LogFileSummary.VAR_S3_BUCKET));
         } catch (Exception e) {
             String message = "FAIL. " + LogsAnalyzer.class.getSimpleName() + ". Initialization failure";
             log.error(message, e);
@@ -40,9 +38,9 @@ public class LogsAnalyzer extends AbstractWorker {
 
         try {
             final List<LogFileSummary> stats = new ArrayList<>();
-            logsBucket.listObjectSummaries(new S3Service.ListFunc<S3ObjectSummary>() {
+            logsBucket.listObjectSummaries(new S3Bucket.ListFunc<S3ObjectSummary>() {
                 public void process(S3ObjectSummary summary) {
-                    List<LogCacheLine> logEntries = logsBucket.getObject(summary.getKey());
+                    List<LogCacheLine> logEntries = logsBucket.getObject(summary.getKey(), List.class);
                     LogFileSummary stat = analyzeLog(logEntries);
                     stats.add(stat);
                     String key = summary.getKey().replace(".json", "-stat.json");
@@ -131,7 +129,7 @@ public class LogsAnalyzer extends AbstractWorker {
 
     private List<String> getNewSites() throws Exception {
         final List<String> sites = new ArrayList<>();
-        siteBucket.listObjects(new S3Service.ListFunc<Site>() {
+        siteBucket.listObjects(Site.class, new S3Bucket.ListFunc<Site>() {
             public void process(Site site) {
                 if (site.getLastCheckDate() <= 0 || site.getExternalId() == null || site.getExternalId().length() == 0)
                     sites.add(site.getUrl());

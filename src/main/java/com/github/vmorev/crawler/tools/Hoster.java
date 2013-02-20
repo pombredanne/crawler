@@ -1,32 +1,33 @@
 package com.github.vmorev.crawler.tools;
 
+import com.github.vmorev.amazon.S3Bucket;
+import com.github.vmorev.amazon.SDBDomain;
+import com.github.vmorev.amazon.SQSQueue;
+import com.github.vmorev.amazon.utils.ConfigStorage;
+import com.github.vmorev.crawler.beans.Article;
 import com.github.vmorev.crawler.beans.HosterConfig;
-import com.github.vmorev.crawler.beans.SDBItem;
+import com.github.vmorev.crawler.beans.LogFileSummary;
 import com.github.vmorev.crawler.beans.Site;
-import com.github.vmorev.crawler.utils.ConfigStorage;
 import com.github.vmorev.crawler.utils.HttpHelper;
-import com.github.vmorev.crawler.utils.JsonHelper;
-import com.github.vmorev.crawler.utils.amazon.S3Service;
-import com.github.vmorev.crawler.utils.amazon.SDBService;
-import com.github.vmorev.crawler.utils.amazon.SQSService;
+import com.github.vmorev.crawler.utils.LogHelper;
 import com.github.vmorev.crawler.workers.AbstractWorker;
 import com.github.vmorev.crawler.workers.WorkerService;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 public class Hoster {
     private static WorkerService service;
     private static final Logger log = LoggerFactory.getLogger(Hoster.class);
-    protected static SDBService.Domain<Site> siteDomain;
+    protected static SDBDomain siteDomain;
 
     public static void main(String[] args) throws Exception {
         //update logger with local config if present
-        ConfigStorage.updateLogger();
+        LogHelper.updateLogger();
 
         initAmazon();
 
@@ -34,7 +35,7 @@ public class Hoster {
         String hosterFileName = "hoster.json";
         if (args.length > 0 && args[0] != null && args[0].length() > 0)
             hosterFileName = args[0];
-        HosterConfig hoster = ConfigStorage.getInstance(hosterFileName, HosterConfig.class, false);
+        HosterConfig hoster = ConfigStorage.loadObject(hosterFileName, HosterConfig.class, false);
 
         //update or add sites to sdb
         saveSites(hoster.getSitesFileName());
@@ -63,20 +64,16 @@ public class Hoster {
     }
 
     private static void initAmazon() throws Exception {
-        S3Service s3 = new S3Service();
+        new S3Bucket(S3Bucket.getConfig().getValue(LogFileSummary.VAR_LOG_S3_BUCKET)).createBucket();
+        new S3Bucket(S3Bucket.getConfig().getValue(LogFileSummary.VAR_S3_BUCKET)).createBucket();
+        new S3Bucket(S3Bucket.getConfig().getValue(Site.VAR_S3_BUCKET)).createBucket();
+        new S3Bucket(S3Bucket.getConfig().getValue(Article.VAR_S3_BUCKET)).createBucket();
 
-        s3.getBucket(s3.getConfig().getLogs(), Object.class).createBucket();
-        s3.getBucket(s3.getConfig().getLogsStat(), Object.class).createBucket();
-        s3.getBucket(s3.getConfig().getSite(), Object.class).createBucket();
-        s3.getBucket(s3.getConfig().getArticle(), Object.class).createBucket();
+        new SQSQueue(SQSQueue.getConfig().getValue(Article.VAR_SQS_QUEUE)).createQueue();
+        new SQSQueue(SQSQueue.getConfig().getValue(Site.VAR_SQS_QUEUE)).createQueue();
 
-        SQSService sqs = new SQSService();
-        sqs.getQueue(sqs.getConfig().getArticle(), Object.class).createQueue();
-        sqs.getQueue(sqs.getConfig().getSite(), Object.class).createQueue();
-
-        SDBService sdb = new SDBService();
-        sdb.getDomain(sdb.getConfig().getSite(), SDBItem.class).createDomain();
-        sdb.getDomain(sdb.getConfig().getArticle(), SDBItem.class).createDomain();
+        new SDBDomain(SDBDomain.getConfig().getValue(Article.VAR_SDB_DOMAIN)).createDomain();
+        new SDBDomain(SDBDomain.getConfig().getValue(Site.VAR_SDB_DOMAIN)).createDomain();
     }
 
     protected static void saveSites(String sitesFileName) {
@@ -84,19 +81,18 @@ public class Hoster {
             return;
 
         try {
-            List<Site> sites = JsonHelper.parseJson(HttpHelper.inputStreamToString(ClassLoader.getSystemResource(sitesFileName).openStream(), "UTF8"), new TypeReference<List<Site>>() {
+            List<Site> sites = new ObjectMapper().readValue(HttpHelper.inputStreamToString(ClassLoader.getSystemResource(sitesFileName).openStream(), "UTF8"), new TypeReference<List<Site>>() {
             });
 
-            SDBService sdb = new SDBService();
             if (siteDomain == null)
-                sdb.getDomain(sdb.getConfig().getSite(), Site.class);
+                siteDomain = new SDBDomain(SDBDomain.getConfig().getValue(Site.VAR_SDB_DOMAIN));
 
             for (Site site : sites) {
                 //TODO do not rewrite if exist
                 siteDomain.saveObject(Site.generateId(site.getUrl()), site);
                 log.info("SUCCESS. " + Hoster.class.getSimpleName() + ". SITE ADDED TO SDB " + site.getUrl());
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error("FAIL. " + Hoster.class.getSimpleName() + ". SITE FAILED. Can't put new sites to SDB", e);
         }
     }

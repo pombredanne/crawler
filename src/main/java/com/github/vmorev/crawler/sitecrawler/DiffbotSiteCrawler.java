@@ -4,13 +4,11 @@ import com.github.vmorev.crawler.beans.Article;
 import com.github.vmorev.crawler.beans.Site;
 import com.github.vmorev.crawler.utils.DiffbotHelper;
 import com.github.vmorev.crawler.utils.HttpHelper;
-import com.github.vmorev.crawler.utils.JsonHelper;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -51,17 +49,18 @@ public class DiffbotSiteCrawler implements SiteCrawler {
             throw new Exception("Can't get external ID for site, response was: " + response, e);
         }
 
-        List<Article> articles = null;
+        List<Article> articles = new ArrayList<>();
         try {
             String apiUrl = "http://www.diffbot.com/api/dfs/dml/archive?output=json&token=" + token + "&id=" + (site.getExternalId() == null || site.getExternalId().length() <= 0 ? externalId : site.getExternalId());
             response = HttpHelper.getResponse(apiUrl);
-            Map responseData = JsonHelper.parseJson(response, Map.class);
+            Map responseData = new ObjectMapper().readValue(response, Map.class);
 
             //TODO MINOR DIFFBOT implement jackson dependant streaming api usage
-            articles = new ArrayList<>();
+            //noinspection unchecked
             for (Map iterItem : ((List<Map>) ((Map) ((List) responseData.get("childNodes")).get(0)).get("childNodes"))) {
                 if ("item".equals(iterItem.get("tagName"))) {
                     Article article = new Article();
+                    //noinspection unchecked
                     for (Map props : ((List<Map>) iterItem.get("childNodes"))) {
                         if ("title".equals(props.get("tagName"))) {
                             article.setTitle((String) ((List) props.get("childNodes")).get(0));
@@ -72,7 +71,8 @@ public class DiffbotSiteCrawler implements SiteCrawler {
                         } else if ("pubDate".equals(props.get("tagName"))) {
                             String formattedDate = (String) ((List) props.get("childNodes")).get(0);
                             //Thu, 10 Jan 2013 11:57:24 GMT
-                            article.setDate(new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z", Locale.US).parse(formattedDate).getTime());
+                            //article.setDate(new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z", Locale.US).parse(formattedDate).getTime());
+                            article.setDate(formattedDate);
                         } else if ("sp".equals(props.get("tagName"))) {
                             article.setSpamScore((Double) ((List) props.get("childNodes")).get(0));
                         } else if ("sr".equals(props.get("tagName"))) {
@@ -108,7 +108,7 @@ public class DiffbotSiteCrawler implements SiteCrawler {
         String token = diffbotHelper.getToken();
         String apiUrl = "http://www.diffbot.com/api/article?token=" + token + "&tags=1&comments=1&summary=1&url=" + HttpHelper.encode(article.getUrl());
         String response = HttpHelper.getResponse(apiUrl);
-        Article newArticle = JsonHelper.parseJson(response, Article.class);
+        Article newArticle = new ObjectMapper().readValue(response, Article.class);
         if (newArticle.getText() == null || newArticle.getText().length() <= 0)
             throw new IOException("Diffbot returned Article without content. Response was: " + response);
         newArticle.setUrl(article.getUrl());

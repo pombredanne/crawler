@@ -1,9 +1,9 @@
 package com.github.vmorev.crawler.tools;
 
+import com.github.vmorev.amazon.S3Bucket;
+import com.github.vmorev.amazon.SDBDomain;
 import com.github.vmorev.crawler.AbstractAWSTest;
 import com.github.vmorev.crawler.beans.Site;
-import com.github.vmorev.crawler.utils.amazon.S3Service;
-import com.github.vmorev.crawler.utils.amazon.SDBService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,13 +11,12 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class HosterTest extends AbstractAWSTest {
-    private SDBService.Domain<Site> siteDomain;
+    private SDBDomain siteDomain;
 
     @Before
     public void setUp() throws Exception {
         String modifier = "-" + random.nextLong();
-        siteName = sdb.getConfig().getSite() + modifier;
-        siteDomain = sdb.getDomain(siteName, Site.class);
+        siteDomain = new SDBDomain(SDBDomain.getConfig().getValue(Site.VAR_SDB_DOMAIN) + modifier);
         siteDomain.createDomain();
         Hoster.siteDomain = siteDomain;
     }
@@ -32,7 +31,7 @@ public class HosterTest extends AbstractAWSTest {
         Hoster.saveSites("HosterTest.testSaveSites.json");
 
         final long[] count = new long[1];
-        siteDomain.listObjects("select * from " + siteDomain.getName(), new S3Service.ListFunc<Site>() {
+        siteDomain.listObjects("select itemname() from `" + siteDomain.getName() + "`", Site.class, new S3Bucket.ListFunc<Site>() {
             public void process(Site obj) {
                 count[0] += 1;
             }
@@ -40,4 +39,5 @@ public class HosterTest extends AbstractAWSTest {
 
         assertEquals(3, count[0]);
     }
+
 }
