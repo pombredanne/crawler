@@ -22,7 +22,7 @@ public class Cleaner {
     }
 
     private static void cleanS3() {
-        for (Bucket bucket : S3Bucket.listBuckets()) {
+        for (Bucket bucket : new S3Bucket().listBuckets()) {
             try {
                 if (!s3exceptions.contains(bucket.getName())) {
                     new S3Bucket(bucket.getName()).deleteBucket();
@@ -36,7 +36,7 @@ public class Cleaner {
 
     private static void cleanSDB() {
         try {
-            SDBDomain.listDomains(new SDBDomain.ListFunc<String>() {
+            new SDBDomain().listDomains(new SDBDomain.ListFunc<String>() {
                 public void process(String domainName) {
                     new SDBDomain(domainName).deleteDomain();
                     System.out.println("SDB domain was deleted " + domainName);
@@ -48,7 +48,7 @@ public class Cleaner {
     }
 
     private static void cleanSQS() {
-        for (String url : SQSQueue.listQueues()) {
+        for (String url : new SQSQueue().listQueues()) {
             String name = url.substring(url.lastIndexOf("/") + 1, url.length());
             new SQSQueue(name).deleteQueue();
             System.out.println("QSQ queue was deleted " + url);

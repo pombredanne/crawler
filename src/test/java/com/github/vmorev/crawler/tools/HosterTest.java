@@ -30,14 +30,24 @@ public class HosterTest extends AbstractAWSTest {
     public void testSaveSites() throws Exception {
         Hoster.saveSites("HosterTest.testSaveSites.json");
 
+        long objCount;
+        long tryCount = 0;
+        do {
+            objCount = loadObjects();
+            tryCount++;
+        } while (objCount < 3 && tryCount < 5);
+
+        assertEquals(3, objCount);
+    }
+
+    private long loadObjects() throws Exception {
         final long[] count = new long[1];
         siteDomain.listObjects("select itemname() from `" + siteDomain.getName() + "`", Site.class, new S3Bucket.ListFunc<Site>() {
             public void process(Site obj) {
                 count[0] += 1;
             }
         });
-
-        assertEquals(3, count[0]);
+        return count[0];
     }
 
 }

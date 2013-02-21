@@ -1,9 +1,12 @@
 package com.github.vmorev.crawler.workers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Random;
 
 public abstract class AbstractWorker implements Runnable {
-
+    private static final Logger log = LoggerFactory.getLogger(AbstractWorker.class);
     /**
      * defaultRetryCount default is not to retry
      */
@@ -43,6 +46,7 @@ public abstract class AbstractWorker implements Runnable {
                     //perform work
                     performWork();
                 } catch (ExecutionFailureException e) {
+                    log.error("FAIL. " + this.getClass().getSimpleName() + ". EXECUTION FAILED", e);
                     //decrease retry count on failure
                     currentRetryCount--;
                 }
