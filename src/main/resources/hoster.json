@@ -12,15 +12,16 @@
         {
             "className" : "com.github.vmorev.crawler.workers.LogsAnalyzer",
             "threads" : 1,
-            "sleepTime" : 1800000
+            "sleepTime" : 600000
         },
         {
             "className" : "com.github.vmorev.crawler.workers.NewArticlesCrawler",
-            "threads" : 1
+            "threads" : 1,
+            "sleepTime" : 60000
         },
         {
             "className" : "com.github.vmorev.crawler.workers.ArticleContentCrawler",
-            "threads" : 5
+            "threads" : 2
         }
     ]
 }

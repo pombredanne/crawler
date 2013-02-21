@@ -32,7 +32,9 @@ public class Article {
     private long generatedDate;
 
     public static String generateId(String url) {
-        return HttpHelper.encode(url.replace("://",".").replace("/","."));
+        String safeUrl = url.replaceAll("[^A-Za-z0-9]", "-").replaceAll("(-)\\1+", "$1");
+        safeUrl = safeUrl.endsWith("-") ? safeUrl.substring(0, safeUrl.length() - 1) : safeUrl;
+        return HttpHelper.encode(safeUrl);
     }
 
     public Article() {

@@ -20,7 +20,7 @@ maven clean install
 You will need to do some configuration for tests to pass otherwise you could just turn off tests:
 ```bash
 mvn clean install -Dmaven.test.skip=true
-```f
+```
 
 The configuration required is about to put your credentials into config files:
 

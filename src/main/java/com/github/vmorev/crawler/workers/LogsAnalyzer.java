@@ -6,6 +6,8 @@ import com.github.vmorev.amazon.log4j.support.LogCacheLine;
 import com.github.vmorev.crawler.beans.Article;
 import com.github.vmorev.crawler.beans.LogFileSummary;
 import com.github.vmorev.crawler.beans.Site;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,8 +41,9 @@ public class LogsAnalyzer extends AbstractWorker {
         try {
             final List<LogFileSummary> stats = new ArrayList<>();
             logsBucket.listObjectSummaries(new S3Bucket.ListFunc<S3ObjectSummary>() {
-                public void process(S3ObjectSummary summary) {
-                    List<LogCacheLine> logEntries = logsBucket.getObject(summary.getKey(), List.class);
+                public void process(S3ObjectSummary summary) throws IOException {
+                    List<LogCacheLine> logEntries = new ObjectMapper().readValue(logsBucket.getS3().getObject(logsBucket.getName(), summary.getKey()).getObjectContent(), new TypeReference<List<LogCacheLine>>() {
+                    });
                     LogFileSummary stat = analyzeLog(logEntries);
                     stats.add(stat);
                     String key = summary.getKey().replace(".json", "-stat.json");
